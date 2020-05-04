@@ -6,16 +6,15 @@ import controller.FramesController;
 
 import javax.swing.*;
 
-public class Register extends AbstractPanel {
+public class AdminLogin extends AbstractPanel {
+
     private JPanel panel1;
-    private JButton register;
-    private JTextField name;
-    private JTextField email;
+    private JButton login;
+    private JTextField user;
     private JPasswordField password;
     private JLabel mailAdress;
-    private JButton linkLogin;
 
-    public Register(FramesController manager) {
+    public AdminLogin(FramesController manager) {
         super(manager);
         buttonFunctionality();
     }
@@ -26,12 +25,11 @@ public class Register extends AbstractPanel {
     }
 
     private void buttonFunctionality() {
-        linkLogin.addActionListener(e ->linkButtonAction());
 
     }
 
     @Override
     public void linkButtonAction() {
-        getManager().switchFrameTo(ButtonTarget.LOGIN);
+
     }
 }

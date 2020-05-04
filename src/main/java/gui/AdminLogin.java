@@ -1,10 +1,10 @@
 package gui;
 
-import controller.AbstractPanel;
-import controller.ButtonTarget;
+import guiComponents.AbstractPanel;
 import controller.FramesController;
 
 import javax.swing.*;
+import java.util.Arrays;
 
 public class AdminLogin extends AbstractPanel {
 
@@ -17,6 +17,7 @@ public class AdminLogin extends AbstractPanel {
     public AdminLogin(FramesController manager) {
         super(manager);
         buttonFunctionality();
+        roundJTextField(Arrays.<JTextField>asList(user,password));
     }
 
     public JPanel getPanel() {
@@ -32,4 +33,6 @@ public class AdminLogin extends AbstractPanel {
     public void linkButtonAction() {
 
     }
+
+
 }

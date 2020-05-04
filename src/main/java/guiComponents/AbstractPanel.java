@@ -1,4 +1,11 @@
-package controller;
+package guiComponents;
+
+import controller.FramesController;
+
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
+import java.util.List;
 
 public abstract class AbstractPanel {
 
@@ -13,6 +20,11 @@ public abstract class AbstractPanel {
 
     public FramesController getManager() {
         return manager;
+    }
+
+
+    public void roundJTextField(List<JTextField> textArea) {
+        textArea.forEach(e -> e.setBorder(new LineBorder(Color.BLACK,1,true)));
     }
 
     public ButtonTarget getType() {

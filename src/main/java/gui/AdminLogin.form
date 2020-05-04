@@ -7,6 +7,7 @@
     </constraints>
     <properties>
       <background color="-16777216"/>
+      <font name="Noto Serif Thai"/>
       <foreground color="-5111808"/>
       <inheritsPopupMenu value="true"/>
       <maximumSize width="300" height="500"/>
@@ -109,7 +110,7 @@
             <properties>
               <background color="-16777216"/>
               <enabled value="true"/>
-              <icon value="Untitled.png"/>
+              <icon value="photos/redHat.png"/>
               <text value=""/>
             </properties>
           </component>

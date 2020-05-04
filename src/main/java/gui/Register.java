@@ -1,10 +1,11 @@
 package gui;
 
-import controller.AbstractPanel;
-import controller.ButtonTarget;
+import guiComponents.AbstractPanel;
+import guiComponents.ButtonTarget;
 import controller.FramesController;
 
 import javax.swing.*;
+import java.util.Arrays;
 
 public class Register extends AbstractPanel {
     private JPanel panel1;
@@ -18,6 +19,8 @@ public class Register extends AbstractPanel {
     public Register(FramesController manager) {
         super(manager);
         buttonFunctionality();
+        roundJTextField(Arrays.<JTextField>asList(password,email,name));
+
     }
 
     public JPanel getPanel() {
@@ -29,6 +32,8 @@ public class Register extends AbstractPanel {
         linkLogin.addActionListener(e ->linkButtonAction());
 
     }
+
+
 
     @Override
     public void linkButtonAction() {

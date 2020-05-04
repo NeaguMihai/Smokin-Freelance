@@ -1,16 +1,12 @@
 package gui;
 
 
-import controller.AbstractPanel;
-import controller.ButtonTarget;
+import guiComponents.AbstractPanel;
+import guiComponents.ButtonTarget;
 import controller.FramesController;
+import guiComponents.TopMenuBar;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 
 public class LandPage extends JFrame implements FramesController {

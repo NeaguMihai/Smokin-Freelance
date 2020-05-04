@@ -32,7 +32,7 @@
         </constraints>
         <properties>
           <background color="-5111808"/>
-          <borderPainted value="false"/>
+          <borderPainted value="true"/>
           <contentAreaFilled value="true"/>
           <defaultCapable value="true"/>
           <doubleBuffered value="false"/>
@@ -120,7 +120,7 @@
             </constraints>
             <properties>
               <enabled value="true"/>
-              <icon value="photo.png"/>
+              <icon value="photos/fox.png"/>
               <text value=""/>
             </properties>
           </component>

@@ -1,10 +1,11 @@
 package gui;
 
-import controller.AbstractPanel;
-import controller.ButtonTarget;
+import guiComponents.AbstractPanel;
+import guiComponents.ButtonTarget;
 import controller.FramesController;
 
 import javax.swing.*;
+import java.util.Arrays;
 
 public class Login extends AbstractPanel {
     private JPanel panel1;
@@ -17,6 +18,8 @@ public class Login extends AbstractPanel {
     public Login(FramesController manager)
     {   super(manager);
         buttonFunctionality();
+        roundJTextField(Arrays.<JTextField>asList(email,password));
+
     }
 
     public JPanel getPanel() {

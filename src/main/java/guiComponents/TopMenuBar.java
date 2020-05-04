@@ -1,6 +1,5 @@
-package gui;
+package guiComponents;
 
-import controller.ButtonTarget;
 import controller.EventController;
 import controller.FramesController;
 
@@ -47,7 +46,7 @@ public class TopMenuBar extends JMenuBar implements EventController {
         helpMenu = new JMenu("Help");
         help = new JMenuItem("help");
 
-        admin = new JMenu("admin");
+        admin = new JMenu("Admin");
         adminLogin = new JMenuItem("Admin Login");
         normalLogin = new JMenuItem("Normal Login");
 
@@ -61,7 +60,7 @@ public class TopMenuBar extends JMenuBar implements EventController {
 
     }
     private void menuItem(JMenuItem jItem) {
-        jItem.setFont(new Font(Font.MONOSPACED,Font.PLAIN,17));
+        jItem.setFont(new Font(Font.DIALOG,Font.PLAIN,18));
         jItem.setForeground(Color.WHITE);
         jItem.setBackground(Color.RED.darker());
     }

@@ -1,4 +1,4 @@
-package controller;
+package guiComponents;
 
 public enum ButtonTarget {
     LOGIN, REGISTER, ADMIN

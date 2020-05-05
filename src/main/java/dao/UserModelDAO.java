@@ -30,7 +30,7 @@ public class UserModelDAO {
 
             selectAllStatement = connection.prepareStatement("SELECT * FROM temp_users");
 
-            searchByMailStatement = connection.prepareStatement("SELECT * FROM Users WHERE email = ?");
+            searchByMailStatement = connection.prepareStatement("SELECT * FROM ? WHERE email = ?");
 
             accountDeleteStatement = connection.prepareStatement("DELETE * FROM Users WHERE id = ?");
 
@@ -89,10 +89,12 @@ public class UserModelDAO {
         return users;
     }
 
-    public Optional<UserModel> searchByMail(String mail) {
+    public Optional<UserModel> searchByMail(String table, String mail) {
 
         try {
-            searchByMailStatement.setString(1, mail);
+
+            searchByMailStatement.setString(1, table);
+            searchByMailStatement.setString(2, mail);
 
             ResultSet rs = searchByMailStatement.executeQuery();
 

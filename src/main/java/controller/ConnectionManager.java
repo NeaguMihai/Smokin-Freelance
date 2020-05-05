@@ -10,6 +10,7 @@ public class ConnectionManager {
     private String user = "user";
     private String password = "uLMUJ5dU4Myf1J6N";
     private Connection connection;
+    private Connection adminConnection;
     private String database;
 
     private static final class SingletonHolder {
@@ -35,4 +36,35 @@ public class ConnectionManager {
         return connection;
     }
 
+    public Connection getAdminConnection() {
+        return adminConnection;
+    }
+
+    public boolean adminConnection(String name, String password) {
+        String url = "jdbc:mysql://localhost/Smokin_Chat?serverTimezone=UTC";
+
+        try {
+            adminConnection = DriverManager.getConnection(url, name, password);
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean defaultConnection() {
+        String url = "jdbc:mysql://localhost/Smokin_Chat?serverTimezone=UTC";
+
+        try {
+            connection = DriverManager.getConnection(url, user, password);
+            if (adminConnection!=null && !adminConnection.isClosed())
+                adminConnection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+       return true;
+    }
 }

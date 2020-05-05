@@ -1,5 +1,6 @@
 package guiComponents;
 
+import controller.AdminController;
 import controller.EventController;
 import controller.FramesController;
 
@@ -17,6 +18,7 @@ public class TopMenuBar extends JMenuBar implements EventController {
     private JMenu files;
     private JMenuItem exit;
     private JMenuItem reconnect;
+    private JMenuItem logOut;
     private JMenu helpMenu;
     private JMenuItem help;
     private JMenu admin;
@@ -42,6 +44,7 @@ public class TopMenuBar extends JMenuBar implements EventController {
         files = new JMenu("Files");
         exit = new JMenuItem("Exit");
         reconnect = new JMenuItem("Reconnect");
+        logOut = new JMenuItem("logOut");
 
         helpMenu = new JMenu("Help");
         help = new JMenuItem("help");
@@ -50,7 +53,7 @@ public class TopMenuBar extends JMenuBar implements EventController {
         adminLogin = new JMenuItem("Admin Login");
         normalLogin = new JMenuItem("Normal Login");
 
-        setupMenuItems(files, Arrays.asList(reconnect,exit));
+        setupMenuItems(files, Arrays.asList(reconnect, logOut,exit));
 
         setupMenuItems(helpMenu,Arrays.asList(help));
 
@@ -73,6 +76,12 @@ public class TopMenuBar extends JMenuBar implements EventController {
         });
         normalLogin.addActionListener(e -> {
             type = ButtonTarget.LOGIN;
+            AdminController.getInstance().normalConnection();
+            changeLoginType(controller);
+        });
+        logOut.addActionListener(e -> {
+            type = ButtonTarget.LOGIN;
+            AdminController.getInstance().normalConnection();
             changeLoginType(controller);
         });
     }

@@ -1,10 +1,8 @@
 package controller;
 
 import dao.UserModelDAO;
+import model.AppUserModel;
 import model.UserModel;
-
-import java.sql.Connection;
-import java.util.List;
 import java.util.Optional;
 
 public class UserController {
@@ -27,9 +25,10 @@ public class UserController {
 
     public boolean registerRequest( UserModel user) {
 
-        Optional<UserModel> exists = userModelDAO.searchByMail("temp_users", user.getEmail());
+        Optional<UserModel> exists_temp = userModelDAO.searchByMail("temp_users", user.getEmail());
+        Optional<UserModel> exists_user = userModelDAO.searchByMail("Users", user.getEmail());
 
-        if (exists.isEmpty())
+        if (exists_temp.isEmpty() && exists_user.isEmpty())
             return userModelDAO.registerRequest(user);
         else
             return false;
@@ -48,6 +47,17 @@ public class UserController {
 
 
     public boolean loginRequest(String email, String password) {
+        Optional<UserModel> user = userModelDAO.searchByMail("Users", email);
 
+        if (!user.isEmpty()) {
+            if (user.get().getPassword().equals(password)) {
+                AppUserModel.getInstance().setId(user.get().getId());
+                AppUserModel.getInstance().setEmail(user.get().getEmail());
+                AppUserModel.getInstance().setName(user.get().getName());
+                return true;
+            }
+        }
+
+        return false;
     }
 }

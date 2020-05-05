@@ -6,15 +6,15 @@ public class UserModel {
 
     private int id;
 
-    private String nume;
+    private String name;
 
     private String email;
 
     private String password;
 
-    public UserModel(int id, String nume, String email, String password) {
+    public UserModel(int id, String name, String email, String password) {
         this.id = id;
-        this.nume = nume;
+        this.name = name;
         this.email = email;
         this.password = password;
     }
@@ -27,12 +27,12 @@ public class UserModel {
         this.id = id;
     }
 
-    public String getNume() {
-        return nume;
+    public String getName() {
+        return name;
     }
 
-    public void setNume(String nume) {
-        this.nume = nume;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -50,7 +50,7 @@ public class UserModel {
     @Override
     public String toString() {
         return  "id=" + id +
-                ", nume='" + nume + '\'' +
+                ", nume='" + name + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }
@@ -61,12 +61,12 @@ public class UserModel {
         if (o == null || getClass() != o.getClass()) return false;
         UserModel userModel = (UserModel) o;
         return id == userModel.id &&
-                Objects.equals(nume, userModel.nume) &&
+                Objects.equals(name, userModel.name) &&
                 Objects.equals(email, userModel.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nume, email);
+        return Objects.hash(id, name, email);
     }
 }

@@ -1,5 +1,6 @@
 package dao;
 
+import controller.ConnectionManager;
 import model.UserModel;
 
 import java.sql.Connection;
@@ -40,9 +41,16 @@ public class UserModelDAO {
         }
     }
 
+    public boolean changeConnection(Connection connection) {
+
+        this.connection = connection;
+
+        return connection != null;
+    }
+
     public boolean registerRequest(UserModel user) {
         try {
-            registerRequestStatement.setString(1, user.getNume());
+            registerRequestStatement.setString(1, user.getName());
             registerRequestStatement.setString(2, user.getEmail());
             registerRequestStatement.setString(3, user.getPassword());
 
@@ -56,7 +64,7 @@ public class UserModelDAO {
 
     public boolean register(UserModel user) {
         try {
-            registerStatement.setString(1, user.getNume());
+            registerStatement.setString(1, user.getName());
             registerStatement.setString(2, user.getEmail());
             registerStatement.setString(3, user.getPassword());
 
@@ -115,6 +123,8 @@ public class UserModelDAO {
 
         return Optional.empty();
     }
+
+
 
     public boolean deleteAccount(int id) {
 

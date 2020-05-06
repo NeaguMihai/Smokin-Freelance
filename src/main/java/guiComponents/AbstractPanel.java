@@ -1,6 +1,6 @@
 package guiComponents;
 
-import controller.FramesController;
+import modelControllerInterfaces.FramesController;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -17,6 +17,7 @@ public abstract class AbstractPanel {
     }
 
     public abstract void linkButtonAction();
+    public abstract void refresh();
 
     public FramesController getManager() {
         return manager;

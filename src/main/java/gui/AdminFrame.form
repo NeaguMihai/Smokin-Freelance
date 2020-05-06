@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.AdminFrame">
-  <grid id="27dc6" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-    <margin top="0" left="0" bottom="0" right="0"/>
+  <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="300" height="550"/>
+      <xy x="20" y="20" width="400" height="650"/>
     </constraints>
     <properties>
-      <maximumSize width="300" height="550"/>
-      <minimumSize width="300" height="550"/>
+      <maximumSize width="400" height="650"/>
+      <minimumSize width="400" height="650"/>
     </properties>
     <border type="none"/>
-    <children/>
+    <children>
+      <scrollpane id="96bfc" binding="scroll">
+        <constraints border-constraint="Center"/>
+        <properties>
+          <maximumSize width="400" height="700"/>
+          <minimumSize width="400" height="650"/>
+          <verticalScrollBarPolicy value="22"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <grid id="89f1e" binding="container" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints/>
+            <properties>
+              <maximumSize width="400" height="700"/>
+            </properties>
+            <border type="none"/>
+            <children/>
+          </grid>
+        </children>
+      </scrollpane>
+    </children>
   </grid>
 </form>

@@ -1,8 +1,10 @@
 package dao;
 
 import controller.ConnectionManager;
+import modelControllerInterfaces.ConnectionSwitched;
 import model.UserModel;
 
+import javax.swing.text.html.HTMLDocument;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UserModelDAO {
+public class UserModelDAO implements ConnectionSwitched {
 
     private Connection connection;
 
@@ -20,6 +22,7 @@ public class UserModelDAO {
     private PreparedStatement selectAllStatement;
     private PreparedStatement searchByMailStatement;
     private PreparedStatement accountDeleteStatement;
+    private PreparedStatement temporaryUserDeleteStatement;
 
     public UserModelDAO(Connection connection) {
         this.connection = connection;
@@ -33,19 +36,13 @@ public class UserModelDAO {
 
             searchByMailStatement = connection.prepareStatement("SELECT * FROM ? WHERE email = ?");
 
-            accountDeleteStatement = connection.prepareStatement("DELETE * FROM Users WHERE id = ?");
+            accountDeleteStatement = connection.prepareStatement("DELETE FROM Users WHERE id = ?");
 
+            temporaryUserDeleteStatement = connection.prepareStatement("DELETE FROM temp_users WHERE email = ?");
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-    }
-
-    public boolean changeConnection(Connection connection) {
-
-        this.connection = connection;
-
-        return connection != null;
     }
 
     public boolean registerRequest(UserModel user) {
@@ -87,7 +84,28 @@ public class UserModelDAO {
                         rs.getString("email"),
                         "Password Holder"
                 );
+                users.add(usr);
 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return users;
+    }
+    public List<UserModel> selectAllUnregistered() {
+        List<UserModel> users = new ArrayList<>();
+        try {
+            ResultSet rs = selectAllStatement.executeQuery();
+
+            while (rs.next()) {
+                UserModel usr = new UserModel(
+                        0,
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        "Password Holder"
+                );
+                users.add(usr);
 
             }
         } catch (SQLException e) {
@@ -140,4 +158,22 @@ public class UserModelDAO {
 
     }
 
+    public boolean deleteTemporary(UserModel user) {
+
+        try {
+            temporaryUserDeleteStatement.setString(1, user.getEmail());
+
+            return temporaryUserDeleteStatement.executeUpdate() != 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+
+    }
+
+    @Override
+    public void switchConnection(Connection connection) {
+        this.connection = connection;
+    }
 }

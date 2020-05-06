@@ -1,12 +1,14 @@
 package gui;
 
 
+import controller.AdminController;
 import guiComponents.AbstractPanel;
 import guiComponents.ButtonTarget;
-import controller.FramesController;
+import modelControllerInterfaces.FramesController;
 import guiComponents.TopMenuBar;
 
 import javax.swing.*;
+import java.awt.*;
 
 
 public class LandPage extends JFrame implements FramesController {
@@ -27,8 +29,8 @@ public class LandPage extends JFrame implements FramesController {
         setJMenuBar(menuBar.getMenuBar());
 
         switchFrameTo(ButtonTarget.LOGIN);
-
-        pack();
+//        pack();
+        setSize(new Dimension(350,700));
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -50,6 +52,11 @@ public class LandPage extends JFrame implements FramesController {
             case ADMIN:
                 currentPanel = new AdminLogin(this);
                 setContentPane(((AdminLogin)currentPanel).getPanel());
+                break;
+            case ADMINFRAME:
+                currentPanel = new AdminFrame(this);
+                setContentPane(((AdminFrame)currentPanel).getPanel());
+                break;
         }
         refreshFrame();
 
@@ -58,6 +65,11 @@ public class LandPage extends JFrame implements FramesController {
     @Override
     public void closeApp() {
         dispose();
+    }
+
+    @Override
+    public void refreshPage() {
+        currentPanel.refresh();
     }
 
     //metoda care da refresh la Jframe dupa schimbarea Jpanelului

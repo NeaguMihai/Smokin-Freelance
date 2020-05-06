@@ -2,8 +2,13 @@ package controller;
 
 
 import dao.UserModelDAO;
+import guiComponents.AdminContacts;
+import model.UserModel;
+
+import java.util.List;
 
 public class AdminController {
+
 
     private static final class SingletonHolder {
         public static final AdminController INSTANCE = new AdminController();
@@ -29,7 +34,7 @@ public class AdminController {
             return false;
         else {
             if (ConnectionManager.getInstance().adminConnection(name, password)) {
-                userModelDAO.changeConnection(ConnectionManager.getInstance().getConnection());
+                userModelDAO.switchConnection(ConnectionManager.getInstance().getConnection());
                 return true;
             }
         }
@@ -38,9 +43,22 @@ public class AdminController {
 
     public boolean normalConnection() {
         boolean action = ConnectionManager.getInstance().defaultConnection();
-        userModelDAO.changeConnection(ConnectionManager.getInstance().getConnection());
+        userModelDAO.switchConnection(ConnectionManager.getInstance().getConnection());
         return action;
     }
+
+    public void deleteRequest(AdminContacts user) {
+        AdminContacts adm = new AdminContacts(user.getUser(),user.getController());
+        userModelDAO.deleteTemporary(user.getUser());
+        adm.updateFrame(adm.getController());
+
+    }
+
+    public List<UserModel> getUnregisters() {
+        return userModelDAO.selectAllUnregistered();
+    }
+
+
 
 
 }

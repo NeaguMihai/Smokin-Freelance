@@ -3,16 +3,16 @@
   <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="GridLayoutManager" row-count="9" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="2518" y="154" width="300" height="550"/>
+      <xy x="2518" y="154" width="400" height="650"/>
     </constraints>
     <properties>
       <background color="-16777216"/>
-      <font name="Noto Serif Thai"/>
+      <font name="DialogInput"/>
       <foreground color="-5111808"/>
       <inheritsPopupMenu value="true"/>
-      <maximumSize width="300" height="500"/>
-      <minimumSize width="300" height="550"/>
-      <preferredSize width="300" height="600"/>
+      <maximumSize width="400" height="650"/>
+      <minimumSize width="400" height="650"/>
+      <preferredSize width="400" height="650"/>
     </properties>
     <border type="none"/>
     <children>
@@ -51,8 +51,8 @@
       <component id="2a9f4" class="javax.swing.JTextField" binding="user">
         <constraints>
           <grid row="3" column="1" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <minimum-size width="200" height="40"/>
-            <preferred-size width="200" height="30"/>
+            <minimum-size width="150" height="40"/>
+            <preferred-size width="150" height="30"/>
           </grid>
         </constraints>
         <properties>
@@ -66,8 +66,8 @@
       <component id="d2cdf" class="javax.swing.JPasswordField" binding="password">
         <constraints>
           <grid row="5" column="1" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <minimum-size width="200" height="40"/>
-            <preferred-size width="200" height="30"/>
+            <minimum-size width="150" height="40"/>
+            <preferred-size width="150" height="30"/>
           </grid>
         </constraints>
         <properties>
@@ -105,12 +105,13 @@
           <component id="756f" class="javax.swing.JLabel">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false">
-                <preferred-size width="200" height="150"/>
+                <preferred-size width="300" height="150"/>
               </grid>
             </constraints>
             <properties>
               <background color="-16777216"/>
               <enabled value="true"/>
+              <horizontalAlignment value="0"/>
               <icon value="photos/redHat.png"/>
               <text value=""/>
             </properties>

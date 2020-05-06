@@ -2,7 +2,7 @@ package gui;
 
 import guiComponents.AbstractPanel;
 import guiComponents.ButtonTarget;
-import controller.FramesController;
+import modelControllerInterfaces.FramesController;
 
 import javax.swing.*;
 import java.util.Arrays;
@@ -15,6 +15,7 @@ public class Register extends AbstractPanel {
     private JPasswordField password;
     private JLabel mailAdress;
     private JButton linkLogin;
+    private JLabel background;
 
     public Register(FramesController manager) {
         super(manager);
@@ -38,5 +39,12 @@ public class Register extends AbstractPanel {
     @Override
     public void linkButtonAction() {
         getManager().switchFrameTo(ButtonTarget.LOGIN);
+    }
+
+    @Override
+    public void refresh() {
+        name.setText("");
+        email.setText("");
+        password.setText("");
     }
 }

@@ -1,17 +1,19 @@
 package controller;
 
+import modelControllerInterfaces.ConnectionSwitched;
+import modelControllerInterfaces.DaoConnectionUpdate;
+
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.List;
 
 public class ConnectionManager {
 
     private String user = "user";
     private String password = "uLMUJ5dU4Myf1J6N";
     private Connection connection;
-    private Connection adminConnection;
-    private String database;
 
     private static final class SingletonHolder {
         public static final ConnectionManager INSTANCE = new ConnectionManager();
@@ -23,7 +25,6 @@ public class ConnectionManager {
         try {
             connection = DriverManager.getConnection(url, user,password);
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new RuntimeException();
         }
     }
@@ -36,20 +37,17 @@ public class ConnectionManager {
         return connection;
     }
 
-    public Connection getAdminConnection() {
-        return adminConnection;
-    }
-
     public boolean adminConnection(String name, String password) {
         String url = "jdbc:mysql://localhost/Smokin_Chat?serverTimezone=UTC";
 
         try {
-            adminConnection = DriverManager.getConnection(url, name, password);
-            connection.close();
+            connection = DriverManager.getConnection(url, name, password);
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            JOptionPane.showMessageDialog(null,"There was an error when establishing the connection");
+            throw new RuntimeException();
+
         }
+
 
         return true;
     }
@@ -59,12 +57,12 @@ public class ConnectionManager {
 
         try {
             connection = DriverManager.getConnection(url, user, password);
-            if (adminConnection!=null && !adminConnection.isClosed())
-                adminConnection.close();
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null,"There was an error when establishing the connection");
             return false;
         }
        return true;
     }
+
 }

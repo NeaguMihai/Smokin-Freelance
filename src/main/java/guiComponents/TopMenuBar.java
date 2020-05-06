@@ -1,8 +1,8 @@
 package guiComponents;
 
 import controller.AdminController;
-import controller.EventController;
-import controller.FramesController;
+import modelControllerInterfaces.EventController;
+import modelControllerInterfaces.FramesController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +16,8 @@ public class TopMenuBar extends JMenuBar implements EventController {
 
     private JMenuBar menuBar;
     private JMenu files;
+    private JMenuItem refresh;
     private JMenuItem exit;
-    private JMenuItem reconnect;
     private JMenuItem logOut;
     private JMenu helpMenu;
     private JMenuItem help;
@@ -43,7 +43,7 @@ public class TopMenuBar extends JMenuBar implements EventController {
 
         files = new JMenu("Files");
         exit = new JMenuItem("Exit");
-        reconnect = new JMenuItem("Reconnect");
+        refresh = new JMenuItem("Refresh");
         logOut = new JMenuItem("logOut");
 
         helpMenu = new JMenu("Help");
@@ -53,7 +53,7 @@ public class TopMenuBar extends JMenuBar implements EventController {
         adminLogin = new JMenuItem("Admin Login");
         normalLogin = new JMenuItem("Normal Login");
 
-        setupMenuItems(files, Arrays.asList(reconnect, logOut,exit));
+        setupMenuItems(files, Arrays.asList(refresh, logOut,exit));
 
         setupMenuItems(helpMenu,Arrays.asList(help));
 
@@ -84,6 +84,7 @@ public class TopMenuBar extends JMenuBar implements EventController {
             AdminController.getInstance().normalConnection();
             changeLoginType(controller);
         });
+        refresh.addActionListener(e -> updateFrame(controller));
     }
 
     @Override
@@ -91,6 +92,11 @@ public class TopMenuBar extends JMenuBar implements EventController {
         controller.switchFrameTo(type);
 
 
+    }
+
+    @Override
+    public void updateFrame(FramesController controller) {
+        controller.refreshPage();
     }
 
     public JMenuBar getMenuBar() {

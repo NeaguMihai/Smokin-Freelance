@@ -3,6 +3,8 @@ package controller;
 import dao.UserModelDAO;
 import model.AppUserModel;
 import model.UserModel;
+
+import javax.swing.*;
 import java.util.Optional;
 
 public class UserController {
@@ -25,13 +27,21 @@ public class UserController {
 
     public boolean registerRequest( UserModel user) {
 
-        Optional<UserModel> exists_temp = userModelDAO.searchByMail("temp_users", user.getEmail());
-        Optional<UserModel> exists_user = userModelDAO.searchByMail("Users", user.getEmail());
-
-        if (exists_temp.isEmpty() && exists_user.isEmpty())
-            return userModelDAO.registerRequest(user);
-        else
+        if (user.getName().equals("")||user.getEmail().equals("")||user.getPassword().equals("")) {
+            JOptionPane.showMessageDialog(null, "All fields must be completed");
             return false;
+        } else{
+
+            Optional<UserModel> exists_temp = userModelDAO.searchByMail("temp_users", user.getEmail());
+            Optional<UserModel> exists_user = userModelDAO.searchByMail("Users", user.getEmail());
+
+            if (exists_temp.isEmpty() && exists_user.isEmpty())
+                return userModelDAO.registerRequest(user);
+            else
+                JOptionPane.showMessageDialog(null,"we couldn't complete this operation");
+                return false;
+        }
+
     }
 
     public boolean register(UserModel user) {
@@ -48,7 +58,8 @@ public class UserController {
 
     public boolean loginRequest(String email, String password) {
         Optional<UserModel> user = userModelDAO.searchByMail("Users", email);
-
+        System.out.println(user.get().getEmail());
+        System.out.println(user.get().getPassword());
         if (!user.isEmpty()) {
             if (user.get().getPassword().equals(password)) {
                 AppUserModel.getInstance().setId(user.get().getId());
@@ -57,6 +68,7 @@ public class UserController {
                 return true;
             }
         }
+        JOptionPane.showMessageDialog(null, "Wrong enail or password");
 
         return false;
     }

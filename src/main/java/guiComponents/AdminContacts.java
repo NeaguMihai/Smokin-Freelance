@@ -27,7 +27,7 @@ public class AdminContacts implements EventController{
 
     public void buttonFunctionality() {
         rejectButton.addActionListener(e-> AdminController.getInstance().deleteRequest(this));
-
+        acceptButton.addActionListener(e -> AdminController.getInstance().addToUsers(this));
 
     }
 

@@ -54,6 +54,11 @@ public class AdminController {
 
     }
 
+    public void addToUsers(AdminContacts user) {
+        userModelDAO.register(user.getUser());
+        deleteRequest(user);
+    }
+
     public List<UserModel> getUnregisters() {
         return userModelDAO.selectAllUnregistered();
     }

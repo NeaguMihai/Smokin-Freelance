@@ -1,5 +1,6 @@
 package gui;
 
+import controller.UserController;
 import guiComponents.AbstractPanel;
 import guiComponents.ButtonTarget;
 import modelControllerInterfaces.FramesController;
@@ -28,7 +29,19 @@ public class Login extends AbstractPanel {
     }
 
     private void buttonFunctionality() {
+
         linkRegister.addActionListener(e -> linkButtonAction());
+        login.addActionListener(e -> {
+            if (UserController.getInstance()
+                    .loginRequest(
+                            email.getText(),
+                            new String(password.getPassword()))
+            ) {
+
+                getManager().switchFrameTo(ButtonTarget.APPBODY);
+            }
+
+        });
     }
 
     @Override

@@ -79,6 +79,7 @@ public class TopMenuBar extends JMenuBar implements EventController {
             AdminController.getInstance().normalConnection();
             changeLoginType(controller);
         });
+
         logOut.addActionListener(e -> {
             type = ButtonTarget.LOGIN;
             AdminController.getInstance().normalConnection();

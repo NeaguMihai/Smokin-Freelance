@@ -30,7 +30,7 @@ public class LandPage extends JFrame implements FramesController {
 
         switchFrameTo(ButtonTarget.LOGIN);
 //        pack();
-        setSize(new Dimension(350,700));
+        setSize(new Dimension(400,800));
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -56,6 +56,10 @@ public class LandPage extends JFrame implements FramesController {
             case ADMINFRAME:
                 currentPanel = new AdminFrame(this);
                 setContentPane(((AdminFrame)currentPanel).getPanel());
+                break;
+            case APPBODY:
+                currentPanel = new AppBody(this);
+                setContentPane(((AppBody)currentPanel).getPanel());
                 break;
         }
         refreshFrame();

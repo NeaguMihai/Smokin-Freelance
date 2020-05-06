@@ -4,7 +4,6 @@ import controller.ConnectionManager;
 import modelControllerInterfaces.ConnectionSwitched;
 import model.UserModel;
 
-import javax.swing.text.html.HTMLDocument;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +19,8 @@ public class UserModelDAO implements ConnectionSwitched {
     private PreparedStatement registerRequestStatement;
     private PreparedStatement registerStatement;
     private PreparedStatement selectAllStatement;
-    private PreparedStatement searchByMailStatement;
+    private PreparedStatement searchByMailTempStatement;
+    private PreparedStatement searchByMailUsersStatement;
     private PreparedStatement accountDeleteStatement;
     private PreparedStatement temporaryUserDeleteStatement;
 
@@ -34,7 +34,9 @@ public class UserModelDAO implements ConnectionSwitched {
 
             selectAllStatement = connection.prepareStatement("SELECT * FROM temp_users");
 
-            searchByMailStatement = connection.prepareStatement("SELECT * FROM ? WHERE email = ?");
+            searchByMailTempStatement = connection.prepareStatement("SELECT * FROM temp_users WHERE email = ?");
+
+            searchByMailUsersStatement = connection.prepareStatement("SELECT * FROM Users WHERE email = ?");
 
             accountDeleteStatement = connection.prepareStatement("DELETE FROM Users WHERE id = ?");
 
@@ -103,7 +105,7 @@ public class UserModelDAO implements ConnectionSwitched {
                         0,
                         rs.getString("name"),
                         rs.getString("email"),
-                        "Password Holder"
+                        rs.getString("password")
                 );
                 users.add(usr);
 
@@ -115,24 +117,43 @@ public class UserModelDAO implements ConnectionSwitched {
         return users;
     }
 
+
     public Optional<UserModel> searchByMail(String table, String mail) {
 
+
         try {
+            ResultSet rs = null;
 
-            searchByMailStatement.setString(1, table);
-            searchByMailStatement.setString(2, mail);
+            if (table.equals("temp_users")) {
+                searchByMailTempStatement.setString(1, mail);
+                rs = searchByMailTempStatement.executeQuery();
 
-            ResultSet rs = searchByMailStatement.executeQuery();
+                if (rs.next()) {
+                    return Optional.of(
+                            new UserModel(
+                                        0,
+                                    rs.getString("name"),
+                                    rs.getString("email"),
+                                    rs.getString("password")
+                            )
+                    );
+                }
+            }
 
-            if (rs.next()) {
-                return Optional.of(
-                        new UserModel(
-                                rs.getInt("id"),
-                                rs.getString("name"),
-                                rs.getString("email"),
-                                rs.getString("password")
-                        )
-                );
+            else if (table.equals("Users")) {
+                searchByMailUsersStatement.setString(1, mail);
+                rs = searchByMailUsersStatement.executeQuery();
+
+                if (rs.next()) {
+                    return Optional.of(
+                            new UserModel(
+                                    rs.getInt("id"),
+                                    rs.getString("name"),
+                                    rs.getString("email"),
+                                    rs.getString("password")
+                            )
+                    );
+                }
             }
 
         } catch (SQLException e) {

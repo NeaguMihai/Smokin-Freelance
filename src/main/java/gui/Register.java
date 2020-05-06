@@ -1,7 +1,9 @@
 package gui;
 
+import controller.UserController;
 import guiComponents.AbstractPanel;
 import guiComponents.ButtonTarget;
+import model.UserModel;
 import modelControllerInterfaces.FramesController;
 
 import javax.swing.*;
@@ -31,7 +33,13 @@ public class Register extends AbstractPanel {
 
     private void buttonFunctionality() {
         linkLogin.addActionListener(e ->linkButtonAction());
+        register.addActionListener(e -> registerRequest());
 
+    }
+
+    public void registerRequest() {
+        UserController.getInstance().registerRequest(new UserModel(0,name.getText(),email.getText(),new String(password.getPassword())));
+        linkButtonAction();
     }
 
 

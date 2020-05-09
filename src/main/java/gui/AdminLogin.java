@@ -27,17 +27,23 @@ public class AdminLogin extends AbstractPanel {
         return panel1;
     }
 
-    private void buttonFunctionality() {
-        login.addActionListener(e -> {
-            if (!AdminController.getInstance().adminLogin(user.getText(),new String(password.getPassword()))) {
-                JOptionPane.showMessageDialog(null, "Wrong username or password");
-            }else {
-                linkButtonAction();
-            }
-
-        });
+    private void loginRequest() {
+        if (!AdminController.getInstance().adminLogin(user.getText(),new String(password.getPassword()))) {
+            JOptionPane.showMessageDialog(null, "Wrong username or password");
+            Arrays.asList(user, password).forEach(e -> e.setText(""));
+        }else {
+            linkButtonAction();
+        }
     }
 
+    private void buttonFunctionality() {
+        login.addActionListener(e -> loginRequest());
+    }
+
+    @Override
+    public void keyEnterTrigger() {
+        loginRequest();
+    }
 
     @Override
     public void linkButtonAction() {

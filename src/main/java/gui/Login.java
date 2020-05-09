@@ -1,5 +1,6 @@
 package gui;
 
+import algorithms.PasswordEncrypt;
 import controller.UserController;
 import guiComponents.AbstractPanel;
 import guiComponents.ButtonTarget;
@@ -28,20 +29,28 @@ public class Login extends AbstractPanel {
         return panel1;
     }
 
+    private void loginRequest() {
+
+        if (UserController.getInstance()
+                .loginRequest(
+                        email.getText(),
+                        PasswordEncrypt.getPassword(new String(password.getPassword())))
+        ) {
+
+            getManager().switchFrameTo(ButtonTarget.APPBODY);
+        }
+        Arrays.asList(email, password).forEach(e -> e.setText(""));
+    }
+
     private void buttonFunctionality() {
 
         linkRegister.addActionListener(e -> linkButtonAction());
-        login.addActionListener(e -> {
-            if (UserController.getInstance()
-                    .loginRequest(
-                            email.getText(),
-                            new String(password.getPassword()))
-            ) {
+        login.addActionListener(e -> loginRequest());
+    }
 
-                getManager().switchFrameTo(ButtonTarget.APPBODY);
-            }
-
-        });
+    @Override
+    public void keyEnterTrigger() {
+        loginRequest();
     }
 
     @Override

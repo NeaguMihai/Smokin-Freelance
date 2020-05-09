@@ -1,5 +1,6 @@
 package gui;
 
+import algorithms.PasswordEncrypt;
 import controller.UserController;
 import guiComponents.AbstractPanel;
 import guiComponents.ButtonTarget;
@@ -9,7 +10,7 @@ import modelControllerInterfaces.FramesController;
 import javax.swing.*;
 import java.util.Arrays;
 
-public class Register extends AbstractPanel {
+public class Register extends AbstractPanel{
     private JPanel panel1;
     private JButton register;
     private JTextField name;
@@ -37,12 +38,33 @@ public class Register extends AbstractPanel {
 
     }
 
+
+
     public void registerRequest() {
-        UserController.getInstance().registerRequest(new UserModel(0,name.getText(),email.getText(),new String(password.getPassword())));
-        linkButtonAction();
+       if (!UserController.getInstance()
+               .registerRequest(
+                       new UserModel(
+                               0,
+                               name.getText(),
+                               email.getText(),
+                               PasswordEncrypt.getPassword(new String(password.getPassword())),
+                               "",
+                               0
+                       )
+               )
+       ) {
+           JOptionPane.showMessageDialog(null,"User Already registered");
+           Arrays.asList(email, name, password).forEach(e -> e.setText(""));
+       }else {
+           linkButtonAction();
+       }
+
     }
 
-
+    @Override
+    public void keyEnterTrigger() {
+        registerRequest();
+    }
 
     @Override
     public void linkButtonAction() {
@@ -55,4 +77,5 @@ public class Register extends AbstractPanel {
         email.setText("");
         password.setText("");
     }
+
 }

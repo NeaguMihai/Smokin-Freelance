@@ -1,6 +1,6 @@
 package dao;
 
-import controller.ConnectionManager;
+
 import modelControllerInterfaces.ConnectionSwitched;
 import model.UserModel;
 
@@ -21,6 +21,7 @@ public class UserModelDAO implements ConnectionSwitched {
     private PreparedStatement selectAllStatement;
     private PreparedStatement searchByMailTempStatement;
     private PreparedStatement searchByMailUsersStatement;
+    private PreparedStatement modifyFriendListStatement;
     private PreparedStatement accountDeleteStatement;
     private PreparedStatement temporaryUserDeleteStatement;
 
@@ -30,7 +31,7 @@ public class UserModelDAO implements ConnectionSwitched {
         try {
             registerRequestStatement = connection.prepareStatement("INSERT INTO temp_users VALUES (?,?,?)");
 
-            registerStatement = connection.prepareStatement("INSERT INTO Users VALUES (null,?,?,?)");
+            registerStatement = connection.prepareStatement("INSERT INTO Users VALUES (null,?,?,?,'', 0)");
 
             selectAllStatement = connection.prepareStatement("SELECT * FROM temp_users");
 
@@ -41,6 +42,8 @@ public class UserModelDAO implements ConnectionSwitched {
             accountDeleteStatement = connection.prepareStatement("DELETE FROM Users WHERE id = ?");
 
             temporaryUserDeleteStatement = connection.prepareStatement("DELETE FROM temp_users WHERE email = ?");
+
+            modifyFriendListStatement = connection.prepareStatement("UPDATE Users SET friends = ? WHERE email = ?");
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -74,27 +77,7 @@ public class UserModelDAO implements ConnectionSwitched {
         return false;
     }
 
-    public List<UserModel> selectAll() {
-        List<UserModel> users = new ArrayList<>();
-        try {
-            ResultSet rs = selectAllStatement.executeQuery();
 
-            while (rs.next()) {
-                UserModel usr = new UserModel(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("email"),
-                        "Password Holder"
-                );
-                users.add(usr);
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return users;
-    }
     public List<UserModel> selectAllUnregistered() {
         List<UserModel> users = new ArrayList<>();
         try {
@@ -105,7 +88,9 @@ public class UserModelDAO implements ConnectionSwitched {
                         0,
                         rs.getString("name"),
                         rs.getString("email"),
-                        rs.getString("password")
+                        rs.getString("password"),
+                        "",
+                        0
                 );
                 users.add(usr);
 
@@ -134,7 +119,9 @@ public class UserModelDAO implements ConnectionSwitched {
                                         0,
                                     rs.getString("name"),
                                     rs.getString("email"),
-                                    rs.getString("password")
+                                    rs.getString("password"),
+                                    "",
+                                    0
                             )
                     );
                 }
@@ -150,7 +137,9 @@ public class UserModelDAO implements ConnectionSwitched {
                                     rs.getInt("id"),
                                     rs.getString("name"),
                                     rs.getString("email"),
-                                    rs.getString("password")
+                                    rs.getString("password"),
+                                    rs.getString("friends"),
+                                    rs.getInt("buzz_number")
                             )
                     );
                 }
@@ -189,6 +178,19 @@ public class UserModelDAO implements ConnectionSwitched {
             e.printStackTrace();
         }
 
+        return false;
+
+    }
+
+    public boolean updateFriendlist(String email, String friends) {
+        try {
+            modifyFriendListStatement.setString(1, friends);
+            modifyFriendListStatement.setString(2, email);
+
+            return modifyFriendListStatement.executeUpdate() != 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
 
     }

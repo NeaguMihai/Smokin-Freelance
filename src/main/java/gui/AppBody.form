@@ -52,7 +52,7 @@
                       <text value=""/>
                     </properties>
                   </component>
-                  <component id="233b8" class="javax.swing.JLabel">
+                  <component id="233b8" class="javax.swing.JLabel" binding="UserName">
                     <constraints/>
                     <properties>
                       <background color="-1"/>

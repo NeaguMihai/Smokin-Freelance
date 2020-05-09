@@ -11,6 +11,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="proiectJavaFinal" target="13" />
+      <module name="socketConnection" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

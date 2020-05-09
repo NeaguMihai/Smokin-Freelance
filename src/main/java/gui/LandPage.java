@@ -9,13 +9,16 @@ import guiComponents.TopMenuBar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
-public class LandPage extends JFrame implements FramesController {
+public class LandPage extends JFrame implements FramesController, ActionListener {
 
     private TopMenuBar menuBar;
 
     private AbstractPanel currentPanel;
+
 
     private static class SingletonHolder {
         private static final LandPage INSTANCE = new LandPage();
@@ -74,6 +77,11 @@ public class LandPage extends JFrame implements FramesController {
     @Override
     public void refreshPage() {
         currentPanel.refresh();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 
     //metoda care da refresh la Jframe dupa schimbarea Jpanelului

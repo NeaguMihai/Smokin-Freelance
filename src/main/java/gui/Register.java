@@ -49,6 +49,7 @@ public class Register extends AbstractPanel{
                                email.getText(),
                                PasswordEncrypt.getPassword(new String(password.getPassword())),
                                "",
+                               0,
                                0
                        )
                )

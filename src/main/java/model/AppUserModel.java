@@ -1,16 +1,27 @@
 package model;
 
+import AccountConfig.ReadWrite;
+
 import java.util.*;
 
 public class AppUserModel extends UserModel {
 
+    private HistoryHolder historyHolder;
 
     private static final class SingletonHolder {
-        private static final AppUserModel INSTANCE = new AppUserModel(0, "generic", "generic","", 0);
+        private static final AppUserModel INSTANCE = new AppUserModel(
+                0,
+                "generic",
+                "generic",
+                "",
+                0,
+                0,
+                ReadWrite.getInstance().getObject());
     }
 
-    public AppUserModel(int id, String nume, String email, String friends, int buzzNumber) {
-        super(id, nume, email, "1", friends,buzzNumber);
+    private AppUserModel(int id, String nume, String email, String jobs, int money, int level, HistoryHolder historyHolder) {
+        super(id, nume, email, "c4ca4238a0b923820dcc509a6f75849b", jobs, money, level);
+        this.historyHolder = historyHolder;
     }
 
 
@@ -49,17 +60,12 @@ public class AppUserModel extends UserModel {
     }
 
     @Override
-    public List<FriendModel> getFriends() {
-        return super.getFriends();
+    public List<JobModel> getJobs() {
+        return super.getJobs();
     }
 
     @Override
-    public void setFriends(String friends) {
-        super.setFriends(friends);
-    }
-
-    @Override
-    public void setFriends(List<FriendModel> friends) {
-        super.setFriends(friends);
+    public void setJobs(List<JobModel> friends) {
+        super.setJobs(friends);
     }
 }

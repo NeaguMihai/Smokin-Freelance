@@ -16,11 +16,11 @@ public class ConnectionManager {
     private Connection connection;
 
     private static final class SingletonHolder {
-        public static final ConnectionManager INSTANCE = new ConnectionManager();
+        private static final ConnectionManager INSTANCE = new ConnectionManager();
     }
 
     private ConnectionManager() {
-        String url = "jdbc:mysql://localhost/Smokin_Chat?serverTimezone=UTC";
+        String url = "jdbc:mysql://localhost/Smokin_Freelance?serverTimezone=UTC";
 
         try {
             connection = DriverManager.getConnection(url, user,password);
@@ -38,7 +38,7 @@ public class ConnectionManager {
     }
 
     public boolean adminConnection(String name, String password) {
-        String url = "jdbc:mysql://localhost/Smokin_Chat?serverTimezone=UTC";
+        String url = "jdbc:mysql://localhost/Smokin_Freelance?serverTimezone=UTC";
 
         try {
             connection = DriverManager.getConnection(url, name, password);
@@ -53,7 +53,7 @@ public class ConnectionManager {
     }
 
     public boolean defaultConnection() {
-        String url = "jdbc:mysql://localhost/Smokin_Chat?serverTimezone=UTC";
+        String url = "jdbc:mysql://localhost/Smokin_Freelance?serverTimezone=UTC";
 
         try {
             connection = DriverManager.getConnection(url, user, password);

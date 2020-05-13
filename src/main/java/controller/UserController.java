@@ -1,7 +1,6 @@
 package controller;
 
-import AccountConfig.ReadWrite;
-import dao.UserModelDAO;
+import dao.UserModelDao;
 import model.AppUserModel;
 import model.UserModel;
 
@@ -14,10 +13,10 @@ public class UserController {
         public static final UserController INSTANCE = new UserController();
     }
 
-    private UserModelDAO userModelDAO;
+    private UserModelDao userModelDAO;
 
     private UserController() {
-        userModelDAO = new UserModelDAO(
+        userModelDAO = new UserModelDao(
                 ConnectionManager.getInstance().getConnection()
         );
     }
@@ -53,7 +52,9 @@ public class UserController {
                 AppUserModel.getInstance().setId(user.get().getId());
                 AppUserModel.getInstance().setEmail(user.get().getEmail());
                 AppUserModel.getInstance().setName(user.get().getName());
-                AppUserModel.getInstance().setFriends(user.get().getFriends());
+                AppUserModel.getInstance().setJobs(user.get().getJobs());
+                AppUserModel.getInstance().setLevel(user.get().getLevel());
+                AppUserModel.getInstance().setMoney(user.get().getMoney());
                 return true;
             }
         }
@@ -62,24 +63,10 @@ public class UserController {
         return false;
     }
 
-    public boolean searchFriend(String mail) {
-        Optional<UserModel> user = userModelDAO.searchByMail("Users", mail);
-        if (!user.isEmpty()) {
-            AppUserModel.getInstance().addFriend(user.get());
-            updateFriendList(AppUserModel.getInstance().getEmail(),AppUserModel.getInstance().getFriendsString());
-
-            return true;
-        }else {
-            JOptionPane.showMessageDialog(null, "No user found");
-        }
-        return false;
-
+    public void updateMoney(int money) {
+        userModelDAO.updateMoney(money);
     }
 
-    public boolean updateFriendList(String email, String string) {
-
-        return userModelDAO.updateFriendlist(email,string);
-    }
 
     public void deleteAccount(AppUserModel user)  {
         userModelDAO.deleteAccount(user.getId());

@@ -1,44 +1,50 @@
 package guiComponents;
 
-import AccountConfig.ReadWrite;
 import controller.UserController;
 import gui.AppBody;
 import model.AppUserModel;
-import model.FriendList;
-import model.FriendModel;
+import model.JobList;
+
+import model.PostedJobsList;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
 
 public class UserMenu {
 
     private JPopupMenu popupMenu;
     private List<JMenuItem> dropdownButtons;
-    private JPopupMenu friendlist;
-    private FriendList friends;
+    private JPopupMenu joblist;
+    private JPopupMenu postedJobList;
+    private JobList jobs;
+    private PostedJobsList postedJobs;
+    private Point point;
 
-    public UserMenu(JButton button, AppBody appBody) {
-        friends = FriendList.getInstance();
+    public UserMenu(JButton button, AppBody appBody, Point point) {
+        postedJobs = PostedJobsList.getInstance();
+        jobs = JobList.getInstance();
+        this.point = point;
         createDropdown();
-        ReadWrite.ListHolder holder = ReadWrite.getInstance().restoreFriendConfig();
-        friends.createFriendList(friendlist, holder);
+        postedJobs.createJobList(postedJobList);
+        jobs.createJobList(joblist);
         buttonFunctionality(button, appBody);
     }
 
-    public void createDropdown() {
+    private void createDropdown() {
         popupMenu = new JPopupMenu("Options");
-        friendlist = new JPopupMenu("friendlist");
+        joblist = new JPopupMenu("joblist");
+        postedJobList = new JPopupMenu("postedJobList");
 
         dropdownButtons = new LinkedList<>();
 
         dropdownButtons.add(new JMenuItem("Delete Account"));
-        dropdownButtons.add(new JMenuItem("Add friend"));
-        dropdownButtons.add(new JMenuItem("Friend list"));
+        dropdownButtons.add(new JMenuItem("Post Job"));
+        dropdownButtons.add(new JMenuItem("Search for a job"));
+        dropdownButtons.add(new JMenuItem("Job list"));
+        dropdownButtons.add(new JMenuItem("My posted jobs"));
 
         dropdownButtons.forEach(e -> {
             e.setBackground(Color.RED.darker());
@@ -51,27 +57,36 @@ public class UserMenu {
 
 
 
-    public void buttonFunctionality(JButton button, AppBody appBody) {
+    private void buttonFunctionality(JButton button, AppBody appBody) {
         dropdownButtons.get(0).addActionListener(e -> deleteAccount(appBody));
         dropdownButtons.get(1).addActionListener(e -> {
-            String friendName = JOptionPane.showInputDialog("Please input the friend mail adress");
-            UserController.getInstance().searchFriend(friendName);
-            friends.addFriend();
-            popupMenu.setVisible(false);
+            new AddJobPanel(point.x + 200, point.y, appBody);
+
         });
         dropdownButtons.get(2).addActionListener(e -> {
+            new JobSearch(point.x+200, point.y);
+        });
+        dropdownButtons.get(3).addActionListener(e -> {
 
-            friendlist.show(button, button.getWidth()/2, button.getHeight()/2);
+            joblist.show(button, button.getWidth()/2, button.getHeight()/2);
+
+        });
+        dropdownButtons.get(4).addActionListener(e -> {
+
+            postedJobList.show(button, button.getWidth()/2, button.getHeight()/2);
 
         });
 
     }
 
     public void deleteAccount(AppBody app) {
-        UserController.getInstance()
-                .deleteAccount(AppUserModel.getInstance());
-        app.linkButtonAction();
-        popupMenu.setVisible(false);
+        String s = JOptionPane.showInputDialog(null, "You really want to delete this account?");
+        if (s.equals("yes")) {
+            UserController.getInstance()
+                    .deleteAccount(AppUserModel.getInstance());
+            app.linkButtonAction();
+            popupMenu.setVisible(false);
+        }
     }
 
 

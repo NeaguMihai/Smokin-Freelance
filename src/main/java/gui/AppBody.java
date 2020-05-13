@@ -8,18 +8,23 @@ import model.AppUserModel;
 import modelControllerInterfaces.FramesController;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class AppBody extends AbstractPanel {
     private JPanel panel1;
     private JButton button1;
     private JLabel UserName;
+    private JLabel money;
+    private JLabel level;
     private UserMenu userMenu;
 
-    public AppBody(FramesController manager) {
+    public AppBody(FramesController manager, Point point) {
 
         super(manager);
        UserName.setText(AppUserModel.getInstance().getName());
-       userMenu = new UserMenu(button1, this);
+       money.setText(AppUserModel.getInstance().getMoney() + "$" );
+       level.setText(String.valueOf(AppUserModel.getInstance().getLevel()));
+       userMenu = new UserMenu(button1,this , point);
        buttonFunctionality();
     }
 
@@ -44,6 +49,7 @@ public class AppBody extends AbstractPanel {
 
     @Override
     public void refresh() {
-
+        money.setText(AppUserModel.getInstance().getMoney() + "$" );
+        level.setText(String.valueOf(AppUserModel.getInstance().getLevel()));
     }
 }

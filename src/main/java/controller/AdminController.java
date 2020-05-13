@@ -1,10 +1,15 @@
 package controller;
 
 
-import dao.UserModelDAO;
+import com.sun.jdi.event.StepEvent;
+import dao.JobModelDao;
+import dao.UserModelDao;
 import guiComponents.AdminContacts;
+import model.JobModel;
 import model.UserModel;
 
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class AdminController {
@@ -14,10 +19,15 @@ public class AdminController {
         public static final AdminController INSTANCE = new AdminController();
     }
 
-    private UserModelDAO userModelDAO;
+    private UserModelDao userModelDAO;
+    private JobModelDao jobModelDao;
+
 
     private AdminController() {
-        userModelDAO = new UserModelDAO(
+        userModelDAO = new UserModelDao(
+                ConnectionManager.getInstance().getConnection()
+        );
+        jobModelDao = new JobModelDao(
                 ConnectionManager.getInstance().getConnection()
         );
     }
@@ -57,6 +67,16 @@ public class AdminController {
     public void addToUsers(AdminContacts user) {
         userModelDAO.register(user.getUser());
         deleteRequest(user);
+    }
+
+    public void addLog(String log) {
+        jobModelDao.addLog(log);
+    }
+
+    public LinkedList<String> getLogs() {
+         return jobModelDao.logRequest();
+
+
     }
 
     public List<UserModel> getUnregisters() {

@@ -25,7 +25,7 @@ public class LandPage extends JFrame implements FramesController, ActionListener
     }
 
     private LandPage() {
-        super("Smokin'Chats");
+        super("Smokin'Exchange");
 
         menuBar = new TopMenuBar(this);
 
@@ -57,11 +57,11 @@ public class LandPage extends JFrame implements FramesController, ActionListener
                 setContentPane(((AdminLogin)currentPanel).getPanel());
                 break;
             case ADMINFRAME:
-                currentPanel = new AdminFrame(this);
+                currentPanel = new AdminFrame(this, new Point(this.getX(),this.getY()));
                 setContentPane(((AdminFrame)currentPanel).getPanel());
                 break;
             case APPBODY:
-                currentPanel = new AppBody(this);
+                currentPanel = new AppBody(this,new Point(this.getX(),this.getY()));
                 setContentPane(((AppBody)currentPanel).getPanel());
                 break;
         }

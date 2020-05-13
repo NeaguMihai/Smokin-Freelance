@@ -1,6 +1,7 @@
 package dao;
 
 
+import model.AppUserModel;
 import modelControllerInterfaces.ConnectionSwitched;
 import model.UserModel;
 
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UserModelDAO implements ConnectionSwitched {
+public class UserModelDao implements ConnectionSwitched {
 
     private Connection connection;
 
@@ -20,30 +21,24 @@ public class UserModelDAO implements ConnectionSwitched {
     private PreparedStatement registerStatement;
     private PreparedStatement selectAllStatement;
     private PreparedStatement searchByMailTempStatement;
+    private PreparedStatement updateMoneyStatement;
     private PreparedStatement searchByMailUsersStatement;
-    private PreparedStatement modifyFriendListStatement;
     private PreparedStatement accountDeleteStatement;
     private PreparedStatement temporaryUserDeleteStatement;
 
-    public UserModelDAO(Connection connection) {
+    public UserModelDao(Connection connection) {
         this.connection = connection;
 
         try {
             registerRequestStatement = connection.prepareStatement("INSERT INTO temp_users VALUES (?,?,?)");
-
-            registerStatement = connection.prepareStatement("INSERT INTO Users VALUES (null,?,?,?,'', 0)");
-
+            registerStatement = connection.prepareStatement("INSERT INTO Users VALUES (null,?,?,?,'', 10000, 5,'')");
+            updateMoneyStatement = connection.prepareStatement("UPDATE Users SET money = ? WHERE id = ?");
             selectAllStatement = connection.prepareStatement("SELECT * FROM temp_users");
-
             searchByMailTempStatement = connection.prepareStatement("SELECT * FROM temp_users WHERE email = ?");
-
             searchByMailUsersStatement = connection.prepareStatement("SELECT * FROM Users WHERE email = ?");
-
             accountDeleteStatement = connection.prepareStatement("DELETE FROM Users WHERE id = ?");
-
             temporaryUserDeleteStatement = connection.prepareStatement("DELETE FROM temp_users WHERE email = ?");
 
-            modifyFriendListStatement = connection.prepareStatement("UPDATE Users SET friends = ? WHERE email = ?");
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -90,6 +85,7 @@ public class UserModelDAO implements ConnectionSwitched {
                         rs.getString("email"),
                         rs.getString("password"),
                         "",
+                        0,
                         0
                 );
                 users.add(usr);
@@ -121,6 +117,7 @@ public class UserModelDAO implements ConnectionSwitched {
                                     rs.getString("email"),
                                     rs.getString("password"),
                                     "",
+                                    0,
                                     0
                             )
                     );
@@ -138,8 +135,10 @@ public class UserModelDAO implements ConnectionSwitched {
                                     rs.getString("name"),
                                     rs.getString("email"),
                                     rs.getString("password"),
-                                    rs.getString("friends"),
-                                    rs.getInt("buzz_number")
+                                    rs.getString("jobs"),
+                                    rs.getInt("money"),
+                                    rs.getInt("level")
+
                             )
                     );
                 }
@@ -182,18 +181,18 @@ public class UserModelDAO implements ConnectionSwitched {
 
     }
 
-    public boolean updateFriendlist(String email, String friends) {
+    public boolean updateMoney(int money) {
         try {
-            modifyFriendListStatement.setString(1, friends);
-            modifyFriendListStatement.setString(2, email);
+            updateMoneyStatement.setInt(1,money);
+            updateMoneyStatement.setInt(2, AppUserModel.getInstance().getId());
 
-            return modifyFriendListStatement.executeUpdate() != 0;
+            return updateMoneyStatement.executeUpdate() != 1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
-
     }
+
 
     @Override
     public void switchConnection(Connection connection) {

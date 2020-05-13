@@ -1,10 +1,7 @@
 package model;
 
-import controller.UserController;
-
 import javax.swing.*;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class UserModel {
@@ -17,27 +14,28 @@ public class UserModel {
 
     private String password;
 
-    private int buzzNumber;
+    private int money;
 
-    private List<FriendModel> friendlist;
+    private int level;
 
-    public UserModel(int id, String name, String email, String password, String friends, int buzzNumber) {
+    private List<JobModel> joblist;
+
+    public UserModel(int id, String name, String email, String password, String jobs, int money, int level) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.buzzNumber = buzzNumber;
-
-        setFriends(friends);
+        this.money = money;
+        this.level = level;
     }
 
-    public UserModel(int id, String name, String email, String password,int buzzNumber, LinkedList<FriendModel> friends) {
+    public UserModel(int id, String name, String email, String password, int money, List<JobModel> jobs) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.buzzNumber = buzzNumber;
-        this.friendlist = friends;
+        this.money = money;
+        this.joblist = jobs;
     }
 
 
@@ -69,6 +67,21 @@ public class UserModel {
         return password;
     }
 
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
 
     @Override
     public String toString() {
@@ -78,52 +91,15 @@ public class UserModel {
                 '}';
     }
 
-    public void setFriends(String friends) {
-        friendlist = new LinkedList<>();
-        if (friends.length()!=0) {
-            String[] str = friends.split(" ");
 
-            List<String> mails = Arrays.asList(str);
-
-            mails.forEach(e -> friendlist.add(new FriendModel(e)));
-
-        }
-
-
+    public void setJobs(List<JobModel> jobs) {
+        this.joblist = jobs;
     }
 
-    public void setFriends(List<FriendModel> friends) {
-        this.friendlist = friends;
-    }
 
-    public void addFriend(UserModel user) {
 
-        boolean stmt1 = !user.getEmail().equals(AppUserModel.getInstance().getEmail());
-
-        boolean stmt2 = AppUserModel.getInstance().getFriends().stream().filter(e -> e.getMail().equals(user.getEmail())).count() == 0;
-        if (stmt1 && stmt2) {
-            friendlist.add(new FriendModel(user.getEmail()));
-
-        }else
-            JOptionPane.showMessageDialog(null,"The user is already in the friend list");
-
-    }
-
-    public int getBuzzNumber() {
-        return buzzNumber;
-    }
-
-    public void setBuzzNumber(int buzzNumber) {
-        this.buzzNumber = buzzNumber;
-    }
-
-    public String getFriendsString() {
-        String str =  friendlist.stream().map(FriendModel::toString).collect(Collectors.joining(" "));
-        System.out.println("Stringul din lista"+str);
-        return str;
-    }
-    public List<FriendModel> getFriends() {
-        return  friendlist;
+    public List<JobModel> getJobs() {
+        return joblist;
     }
 
 

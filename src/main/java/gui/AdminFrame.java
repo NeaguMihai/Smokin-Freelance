@@ -1,12 +1,14 @@
 package gui;
 
 import controller.AdminController;
+import guiComponents.LogPanel;
 import modelControllerInterfaces.FramesController;
 import guiComponents.AbstractPanel;
 import guiComponents.AdminContacts;
 import model.UserModel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,14 +16,17 @@ public class AdminFrame extends AbstractPanel {
     private JPanel panel1;
     private JScrollPane scroll;
     private JPanel container;
+    private JButton viewLogsButton;
+    private  Point point;
 
     private List<AdminContacts> model;
 
-    public AdminFrame(FramesController manager) {
+    AdminFrame(FramesController manager, Point point) {
         super(manager);
         model = new ArrayList<>();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-        createContext();
+        this.point = point;
+        createContext(point.x, point.y);
 
     }
 
@@ -36,15 +41,16 @@ public class AdminFrame extends AbstractPanel {
         });
     }
 
-    private void createContext() {
+    private void createContext(int x, int y) {
         listUsers();
         model.forEach(e -> container.add(e.getPanel()));
         container.revalidate();
         container.repaint();
+        viewLogsButton.addActionListener(e -> new LogPanel(x, y));
 
     }
 
-    public JPanel getPanel() {
+    JPanel getPanel() {
         return panel1;
     }
 
@@ -56,7 +62,7 @@ public class AdminFrame extends AbstractPanel {
     @Override
     public void refresh() {
         container.removeAll();
-        createContext();
+        createContext(point.x, point.y);
         System.out.println(model.size());
 
     }

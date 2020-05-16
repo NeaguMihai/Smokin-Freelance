@@ -16,6 +16,8 @@ public class UserModel {
 
     private int money;
 
+    private String jobs;
+
     private int level;
 
     private List<JobModel> joblist;
@@ -27,15 +29,8 @@ public class UserModel {
         this.password = password;
         this.money = money;
         this.level = level;
-    }
-
-    public UserModel(int id, String name, String email, String password, int money, List<JobModel> jobs) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.money = money;
-        this.joblist = jobs;
+        this.jobs = jobs;
+        this.joblist = new LinkedList<>();
     }
 
 
@@ -92,14 +87,22 @@ public class UserModel {
     }
 
 
-    public void setJobs(List<JobModel> jobs) {
+    public void setJobList(List<JobModel> jobs) {
         this.joblist = jobs;
     }
 
 
 
-    public List<JobModel> getJobs() {
+    public List<JobModel> getJobList() {
         return joblist;
+    }
+
+    public String getJobs() {
+        return jobs;
+    }
+
+    public void setJobs(String jobs) {
+        this.jobs = jobs;
     }
 
 

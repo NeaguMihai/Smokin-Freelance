@@ -8,7 +8,6 @@ import java.util.List;
 public class JobListModel {
 
     private List<JMenu> jobs;
-    private List<JMenuItem> jobAction;
     private JPopupMenu parent;
 
 
@@ -18,9 +17,11 @@ public class JobListModel {
 
 
 
-    public void createJobList(JPopupMenu joblist, LinkedList<JMenuItem> list, LinkedList<JMenu> list2) {
+    public void createJobList(JPopupMenu joblist, LinkedList<JMenu> list2) {
+
         jobs = list2;
         parent = joblist;
+        joblist.removeAll();
 
         parent.setBackground(Color.RED.darker());
 
@@ -30,14 +31,14 @@ public class JobListModel {
         });
 
         jobs.forEach(parent::add);
-        jobs.forEach(this::friendListAction);
+        jobs.forEach(this::JobListAction);
         parent.pack();
 
 
     }
 
 
-    public void friendListAction(JMenu menu) {
+    public void JobListAction(JMenu menu) {
 
     }
 

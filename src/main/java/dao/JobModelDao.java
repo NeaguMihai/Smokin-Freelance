@@ -2,6 +2,7 @@ package dao;
 
 import controller.AdminController;
 import controller.ConnectionManager;
+import model.AppUserModel;
 import model.JobModel;
 
 import javax.swing.*;
@@ -10,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 public class JobModelDao {
@@ -23,6 +25,7 @@ public class JobModelDao {
     private PreparedStatement changeAvailabilityStatement;
     private PreparedStatement addLogStatement;
     private PreparedStatement logRequestStatement;
+    private PreparedStatement selectJobsNyIdsStatement;
 
     public JobModelDao(Connection connection) {
         this.connection = connection;
@@ -35,6 +38,7 @@ public class JobModelDao {
             changeAvailabilityStatement = connection.prepareStatement("UPDATE jobs SET available = ? WHERE id = ?");
             addLogStatement = connection.prepareStatement("INSERT INTO logs VALUES (null, ?)");
             logRequestStatement = connection.prepareStatement("SELECT * FROM logs ORDER BY id DESC");
+            selectJobsNyIdsStatement = connection.prepareStatement("SELECT * FROM jobs WHERE id IN (?)");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -80,7 +84,8 @@ public class JobModelDao {
                         rs.getString("name"),
                         rs.getInt("money"),
                         rs.getInt("difficulty"),
-                        rs.getString("details")
+                        rs.getString("details"),
+                        rs.getInt("available")
                 ));
             }
             return  jm;
@@ -138,13 +143,44 @@ public class JobModelDao {
             ResultSet rs = searchByIdStatement.executeQuery();
 
             while (rs.next()) {
-                jm.add(new JMenu(rs.getString("name")));
+                jm.add(new JMenu(rs.getString("name")
+                        + "!@#!@#!@#"
+                        + rs.getInt("available")
+                        + "!@#!@#!@#"
+                        + rs.getInt("id")));
             }
             return jm;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return jm;
+    }
+
+    public void getAcceptedJobs() {
+        try {
+            if (!AppUserModel.getInstance().getJobs().equals("")) {
+            selectJobsNyIdsStatement.setString(1, AppUserModel.getInstance().getJobs());
+
+
+            ResultSet rs = searchByIdStatement.executeQuery();
+                AppUserModel.getInstance().getJobList().clear();
+            while (rs.next()) {
+                JobModel jm = new JobModel(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getInt("money"),
+                        rs.getInt("difficulty"),
+                        rs.getString("details"),
+                        rs.getInt("available")
+                );
+
+                AppUserModel.getInstance().getJobList().add(jm);
+            }
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 

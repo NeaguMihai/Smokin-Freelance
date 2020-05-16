@@ -1,6 +1,5 @@
 package main;
 
-import AccountConfig.ReadWrite;
 import gui.LandPage;
 
 public class Main {

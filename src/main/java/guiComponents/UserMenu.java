@@ -1,9 +1,9 @@
 package guiComponents;
 
+import algorithms.IsNumber;
 import controller.UserController;
 import gui.AppBody;
 import model.AppUserModel;
-import model.JobList;
 
 import model.PostedJobsList;
 
@@ -19,17 +19,14 @@ public class UserMenu {
     private List<JMenuItem> dropdownButtons;
     private JPopupMenu joblist;
     private JPopupMenu postedJobList;
-    private JobList jobs;
     private PostedJobsList postedJobs;
     private Point point;
 
     public UserMenu(JButton button, AppBody appBody, Point point) {
         postedJobs = PostedJobsList.getInstance();
-        jobs = JobList.getInstance();
         this.point = point;
         createDropdown();
         postedJobs.createJobList(postedJobList);
-        jobs.createJobList(joblist);
         buttonFunctionality(button, appBody);
     }
 
@@ -43,8 +40,8 @@ public class UserMenu {
         dropdownButtons.add(new JMenuItem("Delete Account"));
         dropdownButtons.add(new JMenuItem("Post Job"));
         dropdownButtons.add(new JMenuItem("Search for a job"));
-        dropdownButtons.add(new JMenuItem("Job list"));
         dropdownButtons.add(new JMenuItem("My posted jobs"));
+        dropdownButtons.add(new JMenuItem("Top up account"));
 
         dropdownButtons.forEach(e -> {
             e.setBackground(Color.RED.darker());
@@ -64,16 +61,37 @@ public class UserMenu {
 
         });
         dropdownButtons.get(2).addActionListener(e -> {
-            new JobSearch(point.x+200, point.y);
+            new JobSearch(point.x+200, point.y, appBody);
         });
-        dropdownButtons.get(3).addActionListener(e -> {
 
-            joblist.show(button, button.getWidth()/2, button.getHeight()/2);
+        dropdownButtons.get(3).addActionListener(e -> {
+            postedJobs.createJobList(postedJobList);
+            postedJobList.show(button, button.getWidth()/2, button.getHeight()/2);
 
         });
         dropdownButtons.get(4).addActionListener(e -> {
+            String cardNr = JOptionPane.showInputDialog("Insert card number");
+            if (cardNr.length() != 16 || !IsNumber.isLong(cardNr)) {
+                JOptionPane.showMessageDialog(null,"Wrong data");
+                return;
+            }
 
-            postedJobList.show(button, button.getWidth()/2, button.getHeight()/2);
+
+            String cvv = JOptionPane.showInputDialog("Insert CVV");
+            if (cvv.length() !=3 || !IsNumber.isInteger(cvv)){
+                JOptionPane.showMessageDialog(null,"Wrong data");
+                return;
+            }
+
+            String sum = JOptionPane.showInputDialog("Insert sum");
+            if (sum.equals("") || !IsNumber.isInteger(sum)) {
+                JOptionPane.showMessageDialog(null,"Wrong data");
+                return;
+            }
+            AppUserModel.getInstance().setMoney(AppUserModel.getInstance().getMoney() + Integer.parseInt(sum));
+            UserController.getInstance().updateMoney(AppUserModel.getInstance().getMoney());
+            appBody.refresh();
+            JOptionPane.showMessageDialog(null,"Successful");
 
         });
 
@@ -93,5 +111,9 @@ public class UserMenu {
 
     public JPopupMenu getPopupMenu() {
         return popupMenu;
+    }
+
+    public void reftesh() {
+
     }
 }

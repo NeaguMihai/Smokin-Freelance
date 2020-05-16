@@ -53,8 +53,10 @@ public class UserController {
                 AppUserModel.getInstance().setEmail(user.get().getEmail());
                 AppUserModel.getInstance().setName(user.get().getName());
                 AppUserModel.getInstance().setJobs(user.get().getJobs());
+                AppUserModel.getInstance().setJobList(user.get().getJobList());
                 AppUserModel.getInstance().setLevel(user.get().getLevel());
                 AppUserModel.getInstance().setMoney(user.get().getMoney());
+
                 return true;
             }
         }
@@ -65,6 +67,10 @@ public class UserController {
 
     public void updateMoney(int money) {
         userModelDAO.updateMoney(money);
+    }
+
+    public void updateJobs(String string) {
+        userModelDAO.updateJobs(string);
     }
 
 

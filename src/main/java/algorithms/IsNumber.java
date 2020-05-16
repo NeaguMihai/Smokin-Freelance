@@ -17,5 +17,16 @@ public class IsNumber {
 
     }
 
+    public static boolean isLong(String str) {
+        if (str.split(" ").length !=1) return false;
+        else {
+            Scanner sc = new Scanner(str);
+            boolean res = sc.hasNextLong(10);
+            sc.close();
+            return res;
+        }
+
+    }
+
 
 }

@@ -1,17 +1,18 @@
 package model;
 
+import controller.AdminController;
+
 import java.io.Serializable;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+
 
 public class HistoryHolder implements Serializable {
 
-    private List<String> jobHistory;
 
-    public HistoryHolder(List<String> jobHistory) {
-        this.jobHistory = jobHistory;
-    }
-
-    public List<String> getJobHistory() {
-        return jobHistory;
+    public static void addLog(String string) {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        AdminController.getInstance().addLog(format.format(now) + " " + string);
     }
 }

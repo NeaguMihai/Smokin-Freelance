@@ -1,10 +1,13 @@
 package dao;
 
 
+import controller.JobController;
 import model.AppUserModel;
+import model.JobModel;
 import modelControllerInterfaces.ConnectionSwitched;
 import model.UserModel;
 
+import javax.print.attribute.standard.JobMediaSheetsCompleted;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,6 +25,7 @@ public class UserModelDao implements ConnectionSwitched {
     private PreparedStatement selectAllStatement;
     private PreparedStatement searchByMailTempStatement;
     private PreparedStatement updateMoneyStatement;
+    private PreparedStatement updateJobsStatement;
     private PreparedStatement searchByMailUsersStatement;
     private PreparedStatement accountDeleteStatement;
     private PreparedStatement temporaryUserDeleteStatement;
@@ -33,6 +37,7 @@ public class UserModelDao implements ConnectionSwitched {
             registerRequestStatement = connection.prepareStatement("INSERT INTO temp_users VALUES (?,?,?)");
             registerStatement = connection.prepareStatement("INSERT INTO Users VALUES (null,?,?,?,'', 10000, 5,'')");
             updateMoneyStatement = connection.prepareStatement("UPDATE Users SET money = ? WHERE id = ?");
+            updateJobsStatement = connection.prepareStatement("UPDATE Users SET jobs = ? WHERE id = ?");
             selectAllStatement = connection.prepareStatement("SELECT * FROM temp_users");
             searchByMailTempStatement = connection.prepareStatement("SELECT * FROM temp_users WHERE email = ?");
             searchByMailUsersStatement = connection.prepareStatement("SELECT * FROM Users WHERE email = ?");
@@ -129,7 +134,7 @@ public class UserModelDao implements ConnectionSwitched {
                 rs = searchByMailUsersStatement.executeQuery();
 
                 if (rs.next()) {
-                    return Optional.of(
+                    Optional<UserModel> opt =  Optional.of(
                             new UserModel(
                                     rs.getInt("id"),
                                     rs.getString("name"),
@@ -141,6 +146,7 @@ public class UserModelDao implements ConnectionSwitched {
 
                             )
                     );
+                    return opt;
                 }
             }
 
@@ -187,6 +193,18 @@ public class UserModelDao implements ConnectionSwitched {
             updateMoneyStatement.setInt(2, AppUserModel.getInstance().getId());
 
             return updateMoneyStatement.executeUpdate() != 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean updateJobs(String string) {
+        try {
+            updateJobsStatement.setString(1,string);
+            updateJobsStatement.setInt(2, AppUserModel.getInstance().getId());
+
+            return updateJobsStatement.executeUpdate() != 1;
         } catch (SQLException e) {
             e.printStackTrace();
         }

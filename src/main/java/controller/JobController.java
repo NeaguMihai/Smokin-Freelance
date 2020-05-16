@@ -28,11 +28,11 @@ public class JobController {
     }
 
     public void occupyJob(int id) {
-        jobModelDao.changeAvailability(1,id);
+        jobModelDao.changeAvailability(0,id);
     }
 
     public void freeJob(int id) {
-        jobModelDao.changeAvailability(0,id);
+        jobModelDao.changeAvailability(1,id);
     }
 
     public LinkedList<JobModel> getJobList() {
@@ -41,6 +41,11 @@ public class JobController {
 
     public LinkedList<JMenu> getPostedJobs(int id) {
         return jobModelDao.getPostedJobs(id);
+    }
+
+    public void getAcceptedJobs() {
+
+        jobModelDao.getAcceptedJobs();
     }
 
 

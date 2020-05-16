@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 
 public class LandPage extends JFrame implements FramesController, ActionListener {
@@ -32,8 +33,7 @@ public class LandPage extends JFrame implements FramesController, ActionListener
         setJMenuBar(menuBar.getMenuBar());
 
         switchFrameTo(ButtonTarget.LOGIN);
-//        pack();
-        setSize(new Dimension(400,800));
+        setSize(new Dimension(450,800));
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);

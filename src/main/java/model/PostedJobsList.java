@@ -18,15 +18,14 @@ public class PostedJobsList extends JobListModel{
     }
 
     public void createJobList(JPopupMenu joblist) {
-        LinkedList<JMenuItem> jobAction = new LinkedList<>();
-        jobAction.add(new JMenuItem("Delete job"));
 
-        super.createJobList(joblist, jobAction, JobController.getInstance().getPostedJobs(AppUserModel.getInstance().getId()));
+        super.createJobList(joblist, JobController.getInstance().getPostedJobs(AppUserModel.getInstance().getId()));
     }
 
     @Override
-    public void friendListAction(JMenu menu) {
+    public void JobListAction(JMenu menu) {
         LinkedList<JMenuItem> jobAction = new LinkedList<>();
+        jobAction.add(new JMenuItem("Mark as finished"));
         jobAction.add(new JMenuItem("Delete job"));
 
         jobAction.forEach(e -> {
@@ -35,15 +34,22 @@ public class PostedJobsList extends JobListModel{
             e.setFont(new Font(Font.DIALOG,Font.PLAIN,18));
         });
 
+        String [] token = menu.getText().split("!@#!@#!@#");
+        if (Integer.parseInt(token[1]) != 2)
+            jobAction.get(0).setEnabled(false);
+        menu.setText(token[0]);
+        int id = Integer.parseInt(token[2]);
+
         jobAction.forEach(menu::add);
 
-        addButtonActions(jobAction, menu);
+        addButtonActions(jobAction, menu, id);
     }
 
-    @Override
-    protected void addButtonActions(List<JMenuItem> list, JMenu menu) {
-        list.get(0).addActionListener(e -> {
-            JOptionPane.showMessageDialog(null,"neimplementat");
+
+    protected void addButtonActions(List<JMenuItem> list, JMenu menu, int id) {
+        list.get(1).addActionListener(e -> {
+            JobController.getInstance().deleteJob(id);
+            JOptionPane.showMessageDialog(null,"Deleted successfully");
 
         });
     }

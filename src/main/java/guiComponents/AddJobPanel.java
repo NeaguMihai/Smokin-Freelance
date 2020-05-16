@@ -5,6 +5,7 @@ import controller.JobController;
 import controller.UserController;
 import gui.AppBody;
 import model.AppUserModel;
+import model.HistoryHolder;
 
 import javax.swing.*;
 
@@ -37,6 +38,9 @@ public class AddJobPanel extends JFrame {
         }else if (!IsNumber.isInteger(level.getText())) {
             JOptionPane.showMessageDialog(null, "You must use only numbers in the level field");
             return;
+        }else if (Integer.parseInt(level.getText())>10||Integer.parseInt(level.getText())<3) {
+            JOptionPane.showMessageDialog(null, "The difficulty level must be between 3 and 10");
+            return;
         }else if (Integer.parseInt(money.getText()) >= AppUserModel.getInstance().getMoney()) {
             JOptionPane.showMessageDialog(null, "Insufficient funds");
             return;
@@ -54,6 +58,7 @@ public class AddJobPanel extends JFrame {
 
 
         );
+        AppUserModel.getInstance();
         JOptionPane.showMessageDialog(null, "The job was successfully posted");
         dispose();
     }

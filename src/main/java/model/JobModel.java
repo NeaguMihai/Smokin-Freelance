@@ -5,15 +5,17 @@ public class JobModel {
     private String name;
     private int money;
     private int level;
+    private int status;
     private String details;
 
 
-    public JobModel(int id, String name, int money,int level , String details) {
+    public JobModel(int id, String name, int money,int level , String details, int status) {
         this.id = id;
         this.name = name;
         this.money = money;
         this.details = details;
         this.level = level;
+        this.status = status;
     }
 
     public String getName() {
@@ -33,6 +35,10 @@ public class JobModel {
 
     public int getLevel() {
         return level;
+    }
+
+    public int getStatus() {
+        return status;
     }
 
     @Override

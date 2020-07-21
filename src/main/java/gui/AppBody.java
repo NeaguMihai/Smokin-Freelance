@@ -3,6 +3,7 @@ package gui;
 
 import algorithms.FormatText;
 import algorithms.UpdateJobsGuiTask;
+import controller.UserController;
 import guiComponents.AbstractPanel;
 import guiComponents.AcceptedJobPanel;
 import guiComponents.ButtonTarget;
@@ -15,20 +16,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class AppBody extends AbstractPanel {
     private JPanel panel1;
-    private JButton button1;
+    private JButton settings;
     private JLabel UserName;
     private JLabel money;
     private JLabel level;
     private JPanel container;
     private UserMenu userMenu;
-    private ScheduledExecutorService service;
+    private Semaphore semaphore = new Semaphore(1);
+    private UpdateJobsGuiTask task;
 
     public AppBody(FramesController manager, Point point) {
 
@@ -36,43 +35,55 @@ public class AppBody extends AbstractPanel {
        UserName.setText(AppUserModel.getInstance().getName());
        money.setText(AppUserModel.getInstance().getMoney() + "$" );
        level.setText(String.valueOf(AppUserModel.getInstance().getLevel()));
-       userMenu = new UserMenu(button1,this , point);
-        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-        service = Executors.newSingleThreadScheduledExecutor();
+       userMenu = new UserMenu(settings,this , point);
 
-        UpdateJobsGuiTask task = new UpdateJobsGuiTask(this);
+       container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 
-        service.scheduleWithFixedDelay(task,0,5,TimeUnit.MINUTES);
+       //un thread care updateaza la fiecare 5 minute lista de joburi acceptate, banii si nivelul userului in interfata grafica
+       ScheduledExecutorService backgroundService = Executors.newSingleThreadScheduledExecutor();
+
+       task = new UpdateJobsGuiTask(this);
+
+       backgroundService.scheduleWithFixedDelay(task,0,5,TimeUnit.MINUTES);
 
 
-        buttonFunctionality();
+       buttonFunctionality();
     }
 
 
 
     private void buttonFunctionality() {
-        button1.addActionListener(e -> {
-                userMenu.getPopupMenu().show(button1, button1.getWidth()/2, button1.getHeight()/2);
+        settings.addActionListener(e -> {
+            //atunci cand se apasa pe buton se creaza un JPopUpMenu ce are coltul din stanga la jumatatea butonului settings
+                userMenu.getPopupMenu().show(settings, settings.getWidth()/2, settings.getHeight()/2);
         });
     }
 
-    public void createJobList() {
+    //metoda care adauga in fereastra container toate joburile acceptate de user
+    public void  createJobList() {
 
-        List<JobModel> jm = AppUserModel.getInstance().getJobList();
+        try {
+            semaphore.acquire();
+            List<JobModel> jm = AppUserModel.getInstance().getJobList();
+            List<AcceptedJobPanel> jobPanels = new LinkedList<>();
 
-        List<AcceptedJobPanel> jobPanels = new LinkedList<>();
-
-        jm.forEach(e -> jobPanels.add(new AcceptedJobPanel(
+            if (jm.size() != 0)
+            jm.forEach(e -> jobPanels.add(new AcceptedJobPanel(
                 e.getId(),
                 e.getName(),
                 String.valueOf(e.getLevel()),
                 e.getMoney() + "$",
                 FormatText.getFormatedText(e.getDetails()),
                 this
-        )));
-        container.removeAll();
-        refresh();
-        jobPanels.forEach(e -> container.add(e.getPanel1()));
+            )));
+            container.removeAll();
+            refresh();
+            jobPanels.forEach(e -> container.add(e.getPanel1()));
+
+            semaphore.release();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         refresh();
 
     }
@@ -87,12 +98,19 @@ public class AppBody extends AbstractPanel {
         return panel1;
     }
 
+    //metoda care recreaza interfata grafica updatand valorile afisate
     @Override
     public void refresh() {
+        List<Integer> list = UserController.getInstance().updateInfo();
+        AppUserModel.getInstance().setMoney(list.get(0));
+        AppUserModel.getInstance().setLevel(list.get(1));
         money.setText(AppUserModel.getInstance().getMoney() + "$" );
         level.setText(String.valueOf(AppUserModel.getInstance().getLevel()));
-
         container.revalidate();
         container.repaint();
+    }
+
+    public UpdateJobsGuiTask getTask() {
+        return task;
     }
 }

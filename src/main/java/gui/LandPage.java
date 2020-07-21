@@ -40,6 +40,8 @@ public class LandPage extends JFrame implements FramesController, ActionListener
         setVisible(true);
     }
 
+    //corpul aplicatiei in care se schimba toate panelurile de login, register, admin login si register cat si appbody
+    //toate operatiile se fac pe baza enumerarii, fiecare panel exista in enumerare
     @Override
     public void switchFrameTo(ButtonTarget target) {
 

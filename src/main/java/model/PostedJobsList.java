@@ -4,8 +4,10 @@ import controller.JobController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PostedJobsList extends JobListModel{
 
@@ -47,11 +49,25 @@ public class PostedJobsList extends JobListModel{
 
 
     protected void addButtonActions(List<JMenuItem> list, JMenu menu, int id) {
+        list.get(0).addActionListener(e -> {
+            JobController.getInstance().payForJob(id);
+            deleteJob(id);
+        });
+
         list.get(1).addActionListener(e -> {
-            JobController.getInstance().deleteJob(id);
+            deleteJob(id);
             JOptionPane.showMessageDialog(null,"Deleted successfully");
 
         });
+    }
+
+    private void deleteJob(int id) {
+        JobController.getInstance().deleteJob(id);
+        String newJobList = Arrays.stream(
+                AppUserModel.getInstance().getJobs().split(","))
+                .filter(ev -> !ev.equals(String.valueOf(id)))
+                .collect(Collectors.joining(","));
+        AppUserModel.getInstance().setJobs(newJobList);
     }
 
     public static PostedJobsList getInstance() {

@@ -43,8 +43,9 @@ public class Login extends AbstractPanel {
     }
 
     private void buttonFunctionality() {
-
+        //prin aceasta metoda se trece la fereastra de register
         linkRegister.addActionListener(e -> linkButtonAction());
+        //request de login
         login.addActionListener(e -> loginRequest());
     }
 

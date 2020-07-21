@@ -5,6 +5,7 @@ import model.AppUserModel;
 import model.UserModel;
 
 import javax.swing.*;
+import java.util.List;
 import java.util.Optional;
 
 public class UserController {
@@ -25,6 +26,8 @@ public class UserController {
         return SingletonHolder.INSTANCE;
     }
 
+    //metoda care verifica daca un user exista deja in baza de date
+    //daca nu, il inregistreaza
     public boolean registerRequest( UserModel user) {
 
         if (user.getName().equals("")||user.getEmail().equals("")||user.getPassword().equals("")) {
@@ -45,6 +48,8 @@ public class UserController {
     }
 
 
+    //metoda care seteaza AppUserModel cu datele userului din baza de date
+    //daca parola si mailul sunt corecte
     public boolean loginRequest(String email, String password) {
         Optional<UserModel> user = userModelDAO.searchByMail("Users", email);
         if (user.isPresent()) {
@@ -64,15 +69,46 @@ public class UserController {
 
         return false;
     }
-
+    //metoda care updateaza banii dupa postarea unui job
     public void updateMoney(int money) {
-        userModelDAO.updateMoney(money);
+        userModelDAO.updateMoney(money, AppUserModel.getInstance().getId());
     }
 
+    //metoda care updateaza banii
+    public void updateMoney() {
+        userModelDAO.updateMoney();
+    }
+
+    public void updateMoney(int money, int id) {
+        userModelDAO.updateMoney(money, id);
+    }
+
+    //metoda care updateaza lista de joburi din baza de date
     public void updateJobs(String string) {
         userModelDAO.updateJobs(string);
     }
 
+    //metoda care scade nivelul userului din baza de date
+    public void decreaseLevel() {
+        int newLevel = AppUserModel.getInstance().getLevel() -1;
+        if (newLevel < 3)
+            userModelDAO.deleteAccount(AppUserModel.getInstance().getId());
+        else
+            userModelDAO.updateLevel(newLevel, AppUserModel.getInstance().getId());
+    }
+
+    //metoda care creste nivelul userului din baza de date
+    public void increaseLevel() {
+        int newLevel = AppUserModel.getInstance().getLevel() + 1;
+        if (newLevel > 10)
+            newLevel = 10;
+        userModelDAO.updateLevel(newLevel, AppUserModel.getInstance().getId());
+    }
+
+    //metoda care updateaza nivelul si banii userului local cu datele din baza de date
+    public List<Integer> updateInfo() {
+        return userModelDAO.updateInfo();
+    }
 
     public void deleteAccount(AppUserModel user)  {
         userModelDAO.deleteAccount(user.getId());

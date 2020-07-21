@@ -84,7 +84,7 @@
                       <text value=""/>
                     </properties>
                   </component>
-                  <component id="2ccc3" class="javax.swing.JButton" binding="button1" default-binding="true">
+                  <component id="2ccc3" class="javax.swing.JButton" binding="settings" default-binding="true">
                     <constraints/>
                     <properties>
                       <background color="-1"/>

@@ -6,6 +6,7 @@ import model.JobModel;
 
 import javax.swing.*;
 import java.util.LinkedList;
+import java.util.List;
 
 public class JobController {
 
@@ -22,7 +23,7 @@ public class JobController {
     public boolean addJob(String name, int money, int difficulty, String details) {
         return jobModelDao.addJob(name, money, AppUserModel.getInstance().getId(), details, difficulty);
     }
-
+    //
     public void deleteJob(int id) {
         jobModelDao.deleteJob(id);
     }
@@ -34,15 +35,34 @@ public class JobController {
     public void freeJob(int id) {
         jobModelDao.changeAvailability(1,id);
     }
+    //schimba disponibilitatea job.ului in 2( ce se comporta ca un flag ca jobul este complet)
+    public void finishJob(int id) {
+        jobModelDao.changeAvailability(2, id);
+    }
+    //metoda care seteaza id.ul persioanei care a terminat jobul
+    public void finishAndPay(int id) {
+        jobModelDao.setFinisher(id);
+    }
 
+    //metoda care trimite banii  catre userul care a completat jobul
+    public void payForJob(int id) {
+
+        List<Integer> list = jobModelDao.getFinisher(id);
+
+
+        UserController.getInstance().updateMoney(list.get(1), list.get(0));
+    }
+    //metoda care returneaza lista cu model de joburi
     public LinkedList<JobModel> getJobList() {
         return jobModelDao.getJobs();
     }
 
+    //metoda care returneaza lista cu joburi postate de user
     public LinkedList<JMenu> getPostedJobs(int id) {
         return jobModelDao.getPostedJobs(id);
     }
 
+    //metoda care seteaza lista cu joburile acceptate in AppUserModel
     public void getAcceptedJobs() {
 
         jobModelDao.getAcceptedJobs();

@@ -1,6 +1,7 @@
 package guiComponents;
 
 import algorithms.FormatText;
+import controller.ConnectionManager;
 import controller.JobController;
 import controller.UserController;
 import gui.AppBody;
@@ -9,6 +10,8 @@ import model.AppUserModel;
 import javax.swing.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class AcceptedJobPanel{
@@ -21,6 +24,8 @@ public class AcceptedJobPanel{
     private JLabel money;
     private JTextPane textPane1;
     private AppBody appBody;
+    private ExecutorService service = Executors.newSingleThreadExecutor();
+
 
     public AcceptedJobPanel(int id, String name, String level, String money, String details, AppBody appBody) {
         this.id = id;
@@ -29,7 +34,8 @@ public class AcceptedJobPanel{
         this.money.setText(money);
         this.textPane1.setText(FormatText.getFormatedText(details));
         this.appBody = appBody;
-        buttonFunctionality();
+        giveUpButtonFunction();
+        finishJobButtonFunction();
     }
 
     public JPanel getPanel1() {
@@ -37,27 +43,51 @@ public class AcceptedJobPanel{
     }
 
 
-    private void buttonFunctionality() {
+    private void giveUpButtonFunction() {
         giveUpButton.addActionListener(e -> {
-            List<Integer> tokens = Arrays.asList(AppUserModel
-                    .getInstance()
-                    .getJobs().split(",")).stream()
-                    .map(Integer::parseInt).collect(Collectors.toList());
-            tokens.forEach(System.out::println);
-            String res = tokens.stream()
-                    .filter(ev -> ev == id)
-                    .map(String::valueOf)
-                    .collect(Collectors.joining(" "));
 
-            System.out.println(res);
-            AppUserModel.getInstance().setJobs(res);
+            removeJob();
 
-            UserController.getInstance().updateJobs(res);
+            UserController.getInstance().decreaseLevel();
 
-            appBody.createJobList();
-            appBody.refresh();
+            JobController.getInstance().freeJob(id);
+
+            service.execute(appBody.getTask());
 
         });
+    }
+
+    private void finishJobButtonFunction() {
+        finishJobButton.addActionListener(e -> {
+
+            removeJob();
+            JobController.getInstance().finishJob(id);
+            UserController.getInstance().increaseLevel();
+            JobController.getInstance().finishAndPay(id);
+
+            service.execute(appBody.getTask());
+        });
+    }
+
+    private void removeJob() {
+        panel1.getParent().remove(panel1);
+        List<Integer> tokens = Arrays.stream(AppUserModel
+                .getInstance()
+                .getJobs().split(","))
+                .map(Integer::parseInt).collect(Collectors.toList());
+
+
+        String res =  tokens.stream()
+                .filter(ev -> ev != id)
+                .map(String::valueOf)
+                .collect(Collectors.joining(","));
+
+        AppUserModel.getInstance().setJobs(res);
+        UserController.getInstance().updateJobs(res);
+
+
+
+
     }
 
 }

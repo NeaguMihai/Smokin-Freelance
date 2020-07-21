@@ -33,14 +33,6 @@
           </grid>
         </children>
       </scrollpane>
-      <component id="9690" class="javax.swing.JButton" binding="viewLogsButton">
-        <constraints border-constraint="South"/>
-        <properties>
-          <background color="-2621413"/>
-          <foreground color="-1"/>
-          <text value="View Logs"/>
-        </properties>
-      </component>
     </children>
   </grid>
 </form>

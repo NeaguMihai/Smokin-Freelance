@@ -5,7 +5,6 @@ import controller.JobController;
 import controller.UserController;
 import gui.AppBody;
 import model.AppUserModel;
-import model.HistoryHolder;
 
 import javax.swing.*;
 
@@ -45,9 +44,9 @@ public class AddJobPanel extends JFrame {
             JOptionPane.showMessageDialog(null, "Insufficient funds");
             return;
         }
-
-        AppUserModel.getInstance().setMoney(AppUserModel.getInstance().getMoney() - Integer.parseInt(money.getText()));
-        UserController.getInstance().updateMoney(AppUserModel.getInstance().getMoney());
+        int newMoney = AppUserModel.getInstance().getMoney() - Integer.parseInt(money.getText());
+        AppUserModel.getInstance().setMoney(newMoney);
+        UserController.getInstance().updateMoney();
         appBody.refresh();
 
         JobController.getInstance().addJob(

@@ -1,6 +1,9 @@
 package algorithms;
 
 public class FormatText {
+
+    //Metoda care se ocupa cu formatarea txtului pentru afisarea JTextArea
+    //Am folosit un stringBuilder in cazul in care sunt foarte multe stringuri
     public static String getFormatedText(String string) {
 
         StringBuilder sb = new StringBuilder("");

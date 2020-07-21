@@ -9,6 +9,9 @@ import model.AppUserModel;
 import javax.swing.*;
 
 import java.awt.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class JobListItem {
     private JPanel panel1;
@@ -19,6 +22,7 @@ public class JobListItem {
     private JButton acceptButton;
     private JPopupMenu popupMenu;
     private int id;
+    private int posterId;
 
 
     public JobListItem(AppBody appBody, int id, String name, int money, int level, String details) {
@@ -51,16 +55,22 @@ public class JobListItem {
 
     public void setAcceptButton(AppBody appBody) {
         acceptButton.addActionListener(e -> {
-            JobController.getInstance().occupyJob(this.id);
-            String str = AppUserModel.getInstance().getJobs();
-            if (str.length()==0)
-                AppUserModel.getInstance().setJobs(this.id + "");
+            if (AppUserModel.getInstance().getLevel() >= Integer.parseInt(level.getText())){
+                JobController.getInstance().occupyJob(this.id);
+                String str = AppUserModel.getInstance().getJobs();
+                if (str.length() == 0)
+                    AppUserModel.getInstance().setJobs(this.id + "");
+                else
+                    AppUserModel.getInstance().setJobs(str + "," + this.id);
+                UserController.getInstance().updateJobs(AppUserModel.getInstance().getJobs());
+                acceptButton.setEnabled(false);
+            }
             else
-                AppUserModel.getInstance().setJobs(str + "," + this.id);
-            UserController.getInstance().updateJobs(AppUserModel.getInstance().getJobs());
-            acceptButton.setEnabled(false);
-            appBody.createJobList();
-            appBody.refresh();
+                JOptionPane.showMessageDialog(null, "Your level is too small for this job");
+
+            ExecutorService service = Executors.newSingleThreadExecutor();
+
+            service.execute(appBody.getTask());
         });
     }
 }

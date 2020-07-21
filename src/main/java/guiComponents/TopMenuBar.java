@@ -7,6 +7,7 @@ import modelControllerInterfaces.FramesController;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class TopMenuBar extends JMenuBar implements EventController {
@@ -55,7 +56,7 @@ public class TopMenuBar extends JMenuBar implements EventController {
 
         setupMenuItems(files, Arrays.asList(refresh, logOut,exit));
 
-        setupMenuItems(helpMenu,Arrays.asList(help));
+        setupMenuItems(helpMenu, Collections.singletonList(help));
 
         setupMenuItems(admin,Arrays.asList(adminLogin, normalLogin));
 
@@ -86,6 +87,8 @@ public class TopMenuBar extends JMenuBar implements EventController {
             changeLoginType(controller);
         });
         refresh.addActionListener(e -> updateFrame(controller));
+
+        help.addActionListener(e -> new HelpPanel(100,100));
     }
 
     @Override

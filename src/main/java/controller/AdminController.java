@@ -1,15 +1,11 @@
 package controller;
 
 
-import com.sun.jdi.event.StepEvent;
 import dao.JobModelDao;
 import dao.UserModelDao;
 import guiComponents.AdminContacts;
-import model.JobModel;
 import model.UserModel;
 
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 public class AdminController {
@@ -36,7 +32,7 @@ public class AdminController {
 
         return SingletonHolder.INSTANCE;
     }
-
+    //metoda pentru login ca admin
     public boolean adminLogin(String name, String password) {
 
 
@@ -50,34 +46,25 @@ public class AdminController {
         }
         return false;
     }
+    //metoda care schimba conexiunea din user in admin
+    public void normalConnection() {
 
-    public boolean normalConnection() {
-        boolean action = ConnectionManager.getInstance().defaultConnection();
+        ConnectionManager.getInstance().defaultConnection();
         userModelDAO.switchConnection(ConnectionManager.getInstance().getConnection());
-        return action;
     }
-
+    //metoda folosita in admin frame pentru a sterge o cerere de inregistrare
     public void deleteRequest(AdminContacts user) {
         AdminContacts adm = new AdminContacts(user.getUser(),user.getController());
         userModelDAO.deleteTemporary(user.getUser());
         adm.updateFrame(adm.getController());
 
     }
-
+    //metoda care inregistreaza un user din panelul de admin
     public void addToUsers(AdminContacts user) {
         userModelDAO.register(user.getUser());
         deleteRequest(user);
     }
 
-    public void addLog(String log) {
-        jobModelDao.addLog(log);
-    }
-
-    public LinkedList<String> getLogs() {
-         return jobModelDao.logRequest();
-
-
-    }
 
     public List<UserModel> getUnregisters() {
         return userModelDAO.selectAllUnregistered();

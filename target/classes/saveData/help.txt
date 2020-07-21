@@ -1,0 +1,55 @@
+Cum sa folosesti aplicatia:
+
+Smokin'
+
+1.Menu bar:
+-filse
+    - refresh : recreaza pagina curenta. Este necesar doar pentru pagina de admin pentru a verifica noile cereri de inregistrare.
+    - log out : se delogheaza userul curent si aplicatia se intoarce la pagina de login
+    - exit    : inchide aplicatia.
+
+-help
+    - creaza un JTextPane cu textul din fisierul help.txt
+
+-admin
+    - admin login : link catre pagina de admin login.
+    - normal login : link catre pagina de login pentru useri.
+
+2. Login page
+    - Go to register : link catre pagina de register
+    - Login : logare
+
+3. Register page
+    - Go to login : link catre pagina de login
+    - Register : inregistrare ca user temporar
+
+4. Admin login
+    - user : root
+    - parola : empty field
+
+5. Admin panel
+    - lista cu cererile de inregistrare
+    - accept : userul este inregistrat ca user permanent
+    - reject : userul este stres din tabelul de useri temporari
+
+6. App Body
+    - in ordine: nivelul, usernameul, banii, butonul
+    - Daca nivelul unui user scade sub 3, contul sau este automat sters.
+    - Un user nu poate accepta joburi ce necesita un nivel mai mare decat cel actual.
+    - Daca un user renunta la un job, nivelul userului va scadea cu 1.
+    - Daca un user completeaza un job, nivelul sau va creste cu 1.
+
+7. Menu(rotita din dreapta sus)
+    - delete account : stergerea contului.
+    - post job
+        - toate fieldurile trebuie completate.
+    - search for a job :
+        - lista cu joburile postate de altu useri in care se specifica numele, banii, nivelul si detalii despre job.
+        - pentru a accepta un job se apasa butonul accept.
+    - my posted jobs :
+        - lista cu joburile postate de user.
+        - butonul "Mark as finish" poate fi apasat daor dupa ce jobul este marcat ca fiind completat.
+    - top up account :
+        - numarul cardului ( 16 cifre ).
+        - codul ce pe spatele cardului.
+        - suma de bani.
